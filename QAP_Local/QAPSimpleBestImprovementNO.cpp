@@ -28,11 +28,11 @@ bool QAPSimpleBestImprovementNO::findOperation(QAPInstance& instance,
 	vector<int> perm;
 	int numFacilities = instance.getNumLocations();
 	QAPInstance::randomPermutation(numFacilities, perm);
-	//int numKnapsacks = instance.getNumObjs();
+
 	bool initialised = false;
 	double bestDeltaFitness = 0;
-	double deltaFitness;
-	/* TODO
+
+	/* 
 	 * 1. Para todo objeto del problema (accediendo en el orden indicado en perm)
 	 *   a. Para toda mochila del problema (Nota: no te olvides de ninguna)
 	 *     i. Obtener el deltaFitness de asignar dicho objeto a dicha mochila en solution
@@ -46,29 +46,21 @@ bool QAPSimpleBestImprovementNO::findOperation(QAPInstance& instance,
 	 *
 	 */
 
-	for (int i=0; i<numFacilities; i++)
-	{
-		for (int j=i+1; j<numFacilities; j++)
-		{
-			//cout << i << " " << j << endl;
-			deltaFitness = QAPEvaluator::computeDeltaFitness(instance, solution, i,j); 
-			//deltaFitness=instance.getDeltaSumProfits(solution, perm[i], j);
-			if (initialised == false)
+	for (int i = 0; i < numFacilities; i++){
+		int indexFacility = perm[i];
+
+		for (int j = 0; j < numFacilities; j++)	{
+			double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, solution, indexFacility,j); 
+
+			if (deltaFitness < bestDeltaFitness || initialised == false)
 			{
-				bestDeltaFitness=deltaFitness;
-				initialised=true;
-				oaOperation->setValues(i,j,deltaFitness);
-				//oaOperation.apply(solution);	/*No lo tengo claro*/
-			}
-			if (deltaFitness > bestDeltaFitness)
-			{
-				bestDeltaFitness=deltaFitness;
-				oaOperation->setValues(i,j,deltaFitness);
-				//oaOperation.apply(solution);	/*No lo tengo claro*/
+				initialised = true;
+				bestDeltaFitness = deltaFitness;
+				oaOperation->setValues(indexFacility,j,deltaFitness);
 			}
 		}
 	}
-	if (bestDeltaFitness > 0)
+	if (bestDeltaFitness < 0)
 		return false;
 	else{
 		return true;
