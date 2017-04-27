@@ -42,9 +42,9 @@ bool QAPSimpleFirstImprovementNO::findOperation(QAPInstance &instance, QAPSoluti
 	 *
 	 */
 	for(int i=0; i < numLocations; i++){
-		int indexFacility = perm[i];
+	int indexFacility = perm[i];
 
-		for(int j=0; j <= numLocations; j++){
+		for(int j=0; j < numLocations; j++){
 			double deltaFitnessCurrent = QAPEvaluator::computeDeltaFitness(instance, solution, indexFacility,j); 
 
 			if(deltaFitnessCurrent < 0)

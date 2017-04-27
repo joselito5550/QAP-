@@ -120,9 +120,6 @@ void QAPInstance::readInstance(char *filename) {
 }
 
 
-
-
-
 void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 
 	/** TODO
@@ -131,7 +128,6 @@ void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 	 * 3. Recórrelo intercambiando cada elemento con otro escogido de forma aleatoria.
 	 */
 	int numero;
-	srand(time(NULL));
 	perm.clear();
 
 	for (int i=0; i<size; i++)
@@ -148,12 +144,7 @@ void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 	}
 }
 
-/**
-Calcula la diferencia
-DUDA Podriamos calcular uno con el getSumflows, el otro, restarlo y volver 
-a poner el solution como estaba????
-Crear metodo nuevo en solution que te diga que edificio hay en tal localizacion
-*/
+
 double QAPInstance::getDeltaSumCost(QAPSolution& solution, int indexFacility1, int indexFacility2) {
 	double deltaSumProfits = 0.0;
 

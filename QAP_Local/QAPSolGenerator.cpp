@@ -10,6 +10,10 @@
 #include "QAPInstance.h"
 #include "QAPSolution.h"
 #include <stdlib.h>
+#include <time.h>
+#include <iostream>
+
+ using namespace std;
 
 /*void QAPSolGenerator::genRandomSol(QAPInstance &instance, QAPSolution &solution){
 
@@ -26,25 +30,40 @@ void QAPSolGenerator::genRandomSol(QAPInstance &instance, QAPSolution &solution)
 	int numLocation = instance.getNumLocations();
 	vector<Randomhelp> aux;
 
-	for(int i = 0; i< numLocation; i++){
-		Randomhelp help;
-		help.num = i;
-		aux.push_back(help);
-	}
-	//Aqui recorremos los edificios
-	for (int i = 0; i < numLocation; i++){
+
+	// for(int i = 0; i< numLocation; i++){
+	// 	Randomhelp help;
+	// 	help.num = i;
+	// 	aux.push_back(help);
+	// }
+	// //Aqui recorremos los edificios
+	// for (int i = 0; i < numLocation; i++){
 		 
 
-		int randomLocation = rand()%(numLocation);  //TODO Cambiar para seleccionar una de las mochilas disponibles
+	// 	int randomLocation = rand()%(numLocation);  //TODO Cambiar para seleccionar una de las mochilas disponibles
 
-		if(aux[randomLocation].used == false){
-			solution.putFacility(i, randomLocation);
-			aux[randomLocation].used = true;
-		}
-		else 
-		i--;
+	// 	if(aux[randomLocation].used == false){
+	// 		solution.putFacility(i, randomLocation);
+	// 		aux[randomLocation].used = true;
+	// 	}
+	// 	else 
+	// 	i--;
+	// }
+	vector<int> perm;
+	QAPInstance::randomPermutation(numLocation, perm);
+	for(int i=0; i<numLocation; i++)
+	{
+		solution.putFacility(i,perm[i]);
 	}
-	
+
+
+
+		// for(int i=0; i < 26; i++)
+		// {
+		// 	cout << perm[i] << " ";
+		// 	std::cout << solution.whereIsFacility(i) << " ";
+		// }
+		// std::cout << std::endl;
 
 
 

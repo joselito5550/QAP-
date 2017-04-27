@@ -67,6 +67,7 @@ void runALSExperiment(vector<double> &currentResults,
 		 * e inicializa su fitness
 		 */
 		QAPSolGenerator::genRandomSol(instance, initialSolution);
+
 		//DUDA inicializar a 0 el fitness?
 		initialSolution.setFitness(QAPEvaluator::computeFitness(instance,
 			initialSolution));
@@ -88,6 +89,7 @@ void runALSExperiment(vector<double> &currentResults,
 		
 		numInitialSolutions++;
 	}
+	//cout << t.elapsed_time(Timer::VIRTUAL) << " " << QAPEvaluator::getNumEvaluations() << " " << numInitialSolutions << endl;
 
 }
 
@@ -110,7 +112,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,	
 		vector<vector<double>*>* resultsOnThisInstance = new vector<vector<double>*>;
 		results.push_back(resultsOnThisInstance);
 		char *instanceName = mainArgs[iInstance];
-		unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
+		//unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
 		instance.readInstance(instanceName);
 		//Ejecutar la búsqueda local con primera mejora
 		vector<double> *theseFirstResults = new vector<double>;
@@ -125,8 +127,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,	
 		vector<double> *bestBestResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseBestResults);
 		resultsOnThisInstance->push_back(bestBestResults);
-		runALSExperiment(*theseBestResults, *bestBestResults, instance,
-				bestExplorer);
+		runALSExperiment(*theseBestResults, *bestBestResults, instance,	bestExplorer);
 
 	}
 }
@@ -185,7 +186,7 @@ int main(int argc, char **argv) {
 	//////////////////////////
 	unsigned int numInstances = (argc - 1) / 2;
 	vector<vector<vector<double>*>*> allTheResults;
-	srand(seeds[0]);
+	srand(seeds[1]);
 	//En la matriz allTheResults se almacenarán todos los valores de fitness generados
 	//Es tridimensional
 	//El primer índice recorre las instancias de los problemas que se han abordado

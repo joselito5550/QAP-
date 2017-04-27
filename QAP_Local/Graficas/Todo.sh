@@ -7,5 +7,5 @@ set title "Local Search"
 set key right bottom
 set xlabel "Currect"
 set ylabel "Best"
-plot 'ejemplo.txt' using 1 t "Current First" w l, 'ejemplo.txt' using 2 t "Best First" w l,'ejemplo.txt' using 3 t "Current Best" w l,'ejemplo.txt' using 4 t "Best Best" w l,
+plot 'ejemplo.txt' using 1 t "Current First" w l, 'ejemplo.txt' using 2 t "Best First" w l,'ejemplo.txt' using 3 t "Current Best" w l,'ejemplo.txt' using 4 t "Best Best" w l
 _end_

@@ -40,41 +40,6 @@ double QAPEvaluator::computeDeltaFitness(QAPInstance& instance,	QAPSolution& sol
 
 	_numEvaluations++;
 
-	/**
-	 * TODO
-	 * Dado que el fitness depende de si se violan las capacidades de alguna mochila o no,
-	 * deben calcularse las violaciones actuales y las posibles nuevas, además del posible
-	 * cambio en la suma de beneficios
-	 *
-	 * 1. Obten la máxima violación actual
-	 * 2. Invoca a QAPInstance.getDeltaMaxCapacityViolation para que devuelva como se modifica la máxima violación tras la operación
-	 * 3. Suma las medidas anteriores para obtener la máxima violación si se aplica la operación
-	 * 4. Obten la suma de beneficios actual
-	 * 5. Invoca a QAPInstance.getDeltaSumProfits para que devuelva cómo se modifica la suma de beneficios si se aplica la operación
-	 * 6. Suma las dos medidas anteriores para obtener la suma de beneficios si se aplica la operación
-	 *
-	 * Finalmente
-	 * Si las violaciones actuales y nuevas son positivas, devuelve el negativo de deltaMaxCapacityViolation
-	 * Si ambas violaciones son 0, devuelve el deltaSumProfits
-	 * Si sólo la violación actual es positiva y la nueva es 0, devuelve la suma de newSumProfits + el negativo de deltaMaxCapacityViolation
-	 * Si sólo la violación nueva es positiva, devuelve el negativo de (la suma de la nueva violación + la nueva violación de capacidades)
-	 */
-
-	/*double actualMaxViolation = instance.getMaxCapacityViolation(solution);
-	double deltaMaxCapacityViolation = instance.getDeltaMaxCapacityViolation(solution, indexObject, indexKnapsack);
-	double newMaxViolation = actualMaxViolation + deltaMaxCapacityViolation;
-	double actualSumProfits = instance.getSumProfits(solution);
-	double deltaSumProfits = instance.getDeltaSumProfits(solution, indexObject, indexKnapsack);
-	double newSumProfits = actualSumProfits + deltaSumProfits;
-
-	if (actualMaxViolation > 0 && newMaxViolation > 0)
-		return deltaMaxCapacityViolation*-1;
-	else if (actualMaxViolation == 0 && deltaMaxCapacityViolation == 0)
-		return deltaSumProfits;
-	else if (actualMaxViolation > 0)
-		return (newSumProfits + deltaMaxCapacityViolation*-1);
-	else 
-		return (actualSumProfits*-1 + newMaxViolation*-1);*/
 	double fitness = 0;
 	fitness = instance.getDeltaSumCost(solution, indexFacility1, indexFacility2);
 	return fitness;

@@ -64,17 +64,12 @@ public:
 
 	double getDistance(int o1, int o2){return _distances[o1][o2];}
 
-	/**
-	 * Función que devuelve por cuanto se viola la capacidad de la mochila que está más cargada de más
-	 * @param[in] solution Referencia a un objeto que representa una solución al problema
-	 * @return Máxima violación de las capacidades de las mochilas
-	 */
-	//ELIMINADA double getMaxCapacityViolation(QAPSolution &solution);
+
 
 	/**
-	 * Función que calcula la suma de beneficios individuales y cuadráticos de los objetos en mochilas
+	 * Función que calcula la suma de costes de todos lo edificios asignados
 	 * @param[in] solution Referencia a un objeto que representa una solución al problema
-	 * @return Suma de los beneficios individuales y cuadráticos de los objetos en las mochilas
+	 * @return Suma de los costes de asignacion
 	 */
 	double getSumCost(QAPSolution &solution);
 
@@ -88,24 +83,13 @@ public:
 	/**
 	 * Función que calcula la diferencia en la suma de los beneficios si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
 	 * @param[in] solution Referencia a un objeto que representa una solución al problema.
-	 * @param[in] indexObject Índice del objeto que se pondría en otra mochila
-	 * @param[in] indexKnapsack Índice de la mochila donde se pondría el objeto. Puede ser 0, indicando que se saca el objeto de la mochila en la que esté
-	 *
-	 * @return Diferencia en la suma de los beneficios si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
+	 * @param[in] indexFacility1 Índice del edificio que se pondría en otra localización
+	 * @param[in] indexFacility2 Índice de la localización donde se pondrá el edificio
+	 * @return Diferencia ede costes al realizar una nueva asignación
 	 *
 	 */
-	double getDeltaSumCost(QAPSolution &solution, int indexObject, int indexKnapsack);
+	double getDeltaSumCost(QAPSolution &solution, int indexFacility1, int indexFacility2);
 
-	/**
-	 * Función que calcula la diferencia en la máxima violación de alguna de las capacidades de las mochilas si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
-	 * @param[in] solution Referencia a un objeto que representa una solución al problema.
-	 * @param[in] indexObject Índice del objeto que se pondría en otra mochila
-	 * @param[in] indexKnapsack Índice de la mochila donde se pondría el objeto. Puede ser 0, indicando que se saca el objeto de la mochila en la que esté
-	 *
-	 * @return Diferencia en la suma de los beneficios si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
-	 *
-	 */
-	//ELIMINADA double getDeltaMaxCapacityViolation(QAPSolution &solution, int indexObject, int indexKnapsack);
 };
 
 #endif

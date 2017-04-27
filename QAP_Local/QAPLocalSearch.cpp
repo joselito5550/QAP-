@@ -19,14 +19,13 @@ QAPLocalSearch::QAPLocalSearch() {
 QAPLocalSearch::~QAPLocalSearch() {
 }
 
-void QAPLocalSearch::optimise(QAPInstance& instance,
-		QAPNeighExplorer& explorer, QAPSolution& solution) {
+void QAPLocalSearch::optimise(QAPInstance& instance, QAPNeighExplorer& explorer, QAPSolution& solution) {
 
 	_results.clear();
 	_results.push_back(solution.getFitness());
 	QAPObjectAssignmentOperation operation;
-	//bool mejorado=false;
-	/** TODO
+
+	/** 
 	 * 1. Aplica una vez la exploración del vecindario y almacena si se ha conseguido o no mejorar la solución
 	 *
 	 * 2. Mientras se haya conseguido mejorar la solución
@@ -35,13 +34,7 @@ void QAPLocalSearch::optimise(QAPInstance& instance,
 	 *   c. Aplica una nueva exploración del vecindario
 	 */
 
-	//while (explorer.findOperation(instance, solution, operation)==true)
-/*	while(mejorado){
-		cout << "hola" << endl;
-		operation.apply(solution);
-		_results.push_back(solution.getFitness());
-		mejorado=explorer.findOperation(instance, solution, operation);
-	}*/
+
 
 	while (explorer.findOperation(instance, solution, operation)==true)
 	{

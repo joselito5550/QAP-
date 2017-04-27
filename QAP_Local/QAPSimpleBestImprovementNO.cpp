@@ -26,8 +26,8 @@ bool QAPSimpleBestImprovementNO::findOperation(QAPInstance& instance,
 
 	//Crear una permutación de los índices de los objetos e inicializar algunas variables
 	vector<int> perm;
-	int numFacilities = instance.getNumLocations();
-	QAPInstance::randomPermutation(numFacilities, perm);
+	int numLocations = instance.getNumLocations();
+	QAPInstance::randomPermutation(numLocations, perm);
 
 	bool initialised = false;
 	double bestDeltaFitness = 0;
@@ -46,24 +46,24 @@ bool QAPSimpleBestImprovementNO::findOperation(QAPInstance& instance,
 	 *
 	 */
 
-	for (int i = 0; i < numFacilities; i++){
-		int indexFacility = perm[i];
+	for (int i = 0; i < numLocations; i++){
 
-		for (int j = 0; j < numFacilities; j++)	{
-			double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, solution, indexFacility,j); 
+
+		for (int j = 0; j < numLocations; j++)	{
+			double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, solution, perm[i],j); 
 
 			if (deltaFitness < bestDeltaFitness || initialised == false)
 			{
 				initialised = true;
 				bestDeltaFitness = deltaFitness;
-				oaOperation->setValues(indexFacility,j,deltaFitness);
+				oaOperation->setValues(perm[i],j,deltaFitness);
 			}
 		}
 	}
 	if (bestDeltaFitness < 0)
-		return false;
-	else{
 		return true;
+	else{
+		return false;
 	
 	}
 }

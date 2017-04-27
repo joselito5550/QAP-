@@ -27,7 +27,7 @@ public:
 	/**
 	 * Función que busca una operación que aplicada a la solución devuelva otra solución vecina. Se utilizará para buscar una solución vecina que la mejore, o la mejor de las soluciones vecinas.
 	 *
-	 * @param[in] instance Instancia del problema de la múltiples mochilas cuadráticas
+	 * @param[in] instance Instancia del problema de la asignación cuadrática
 	 * @param[in] solution Solución cuya vecindad va a ser explorada
 	 * @param[out] operation Operación que se devuelve al explorar la vecindad.
 	 *
