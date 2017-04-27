@@ -9,8 +9,8 @@
 #include "MQKPObjectAssignmentOperation.h"
 
 MQKPObjectAssignmentOperation::MQKPObjectAssignmentOperation(){
-	_indexKnapsack = 0;
-	_indexObj = 0;
+	_indexFacility1 = 0;
+	_indexFacility2 = 0;
 	_deltaFitness = 0;
 }
 
@@ -22,10 +22,17 @@ void MQKPObjectAssignmentOperation::apply(MQKPSolution& solution) {
 	 * 1. Asigna el objeto de índice _indexObj a la mochila _indexKnapsack en solution
 	 * 2. Actualiza el fitness de solution sumándole _deltaFitness
 	 */
-	solution.putObjectIn(_indexObj, _indexKnapsack);
-	double actualFitness = solution.getFitness();
-	double newFitness = actualFitness + _deltaFitness;
-	solution.setFitness(newFitness);
+	
+	int location1 = solution.whereIsFacility(_indexFacility1);
+	int location2 = solution.whereIsFacility(_indexFacility2);
+
+
+	solution.putFacility(_indexFacility1, location2);
+	solution.putFacility(_indexFacility2, location1);
+
+	double suma_fitness = 0;
+	suma_fitness=_deltaFitness + solution.getFitness();
+	solution.setFitness(suma_fitness);
 }
 
 void MQKPObjectAssignmentOperation::setValues(int indexObject,

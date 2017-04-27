@@ -32,7 +32,7 @@ public:
 	 * 
 	 * @return Fitness de la solución. Será negativa si se viola la capacidad de alguna mochila y positiva si la solución es factible. En ese caso, el valor es igual a la suma de los beneficios individuales y cuadráticos
 	 */
-	static double computeFitness(MQKPInstance &instance, MQKPSolution &solution);
+	static double computeFitness(QAPInstance &instance, QAPSolution &solution);
 
 	/**
 	 * Función que calcula la diferencia en fitness si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
@@ -43,7 +43,7 @@ public:
 	 *
 	 * @return Diferencia en fitness si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
 	 */
-	static double computeDeltaFitness(MQKPInstance &instance, MQKPSolution &solution, int indexObject, int indexKnapsack);
+	static double computeDeltaFitness(QAPInstance &instance, QAPSolution &solution, int indexFacility1, int indexFacility2);
 
 	/**
 	 * Función que resetea la variable interna que contabiliza el número de evaluaciones

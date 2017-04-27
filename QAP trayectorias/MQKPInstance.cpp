@@ -14,93 +14,58 @@
 
 using namespace std;
 
-MQKPInstance::MQKPInstance() {
+QAPInstance::QAPInstance() {
 	// inicializando las variables miembro
-	_numKnapsacks = 0;
-	_numObjs = 0;
-	this->_capacities = NULL;
-	this->_profits = NULL;
-	this->_weights = NULL;
+
+	_numLocations = 0;
+	_numFacilities = 0;
+	this->_distances = NULL;
+	this->_flows = NULL;
+	
 }
 
-MQKPInstance::~MQKPInstance() {
+
+QAPInstance::~QAPInstance() {
 	//
 	int i;
-	for (i = 0; i < getNumObjs(); i++) {
-		delete[] _profits[i];
+	for (i = 0; i < getNumLocations(); i++) {
+		delete[] _flows[i];
+		delete[] _distances[i];
 	}
-	delete[] _profits;
-	delete[] _weights;
-	delete[] _capacities;
-	_numKnapsacks = _numObjs = 0;
+	delete[] _flows;
+	delete[] _distances;
+	_numLocations = _numFacilities = 0;
 }
 
-double MQKPInstance::getMaxCapacityViolation(MQKPSolution &solution) {
 
-	double *sumWeights = new double[this->_numKnapsacks + 1];
+double QAPInstance::getSumCost(QAPSolution &solution) {
 
-	for (int j = 1; j <= this->_numKnapsacks; j++) {
-		sumWeights[j] = 0;
-	}
 
-	for (int i = 0; i < this->_numObjs; i++) {
+	double cost = 0.0;
 
-		/*
-		 * 1. Obtener la mochila en la que se encuentra el objeto i-ésimo
-		 * 2. Si se encuentra en una mochila válida (mayor que 0), incrementar con el peso del objeto el valor correspondiente en sumWeights.
-		 */
-		if (solution.whereIsObject(i) > 0) {
-			sumWeights[solution.whereIsObject(i)] =
-					sumWeights[solution.whereIsObject(i)] + getWeight(i);
-
-		}
-	}
-
-	double maxCapacityViolation = 0; //Inicializamos la máxima violación de alguna mochila a 0, que significa que no hay ninguna violación
-
-	for (int j = 1; j <= this->_numKnapsacks; j++) {
-
-		/*
-		 * 1. Calcular la violación en la mochila j-ésima
-		 * 2. Actualizar maxCapacityViolation en su caso
-		 */
-		if ((sumWeights[j] - getCapacity(j)) > maxCapacityViolation) {
-			maxCapacityViolation = sumWeights[j] - getCapacity(j);
-		}
-	}
-
-	delete[] sumWeights;
-	return maxCapacityViolation;
-}
-
-double MQKPInstance::getSumProfits(MQKPSolution &solution) {
-
-	double sumProfits = 0.;
-
-	/* Doble bucle para cada par de objetos
-	 * Todo objeto incluido en alguna mochila (> 0) debe sumar su beneficio individual
-	 * Todo par de objetos incluidos en la misma mochila (y > 0) debe sumar su beneficio conjunto. IMPORTANTE, sumar los pares (i,j) sólo una vez, es decir, si se suma (i, j), no se debe sumar (j, i)
-	 */
-	int i, j;
-	for(i=0; i<getNumObjs(); i++)
+	/*for(int i=0; i<_numLocationss; i++)
 	{
-		if (solution.whereIsObject(i) > 0)
-		{
-			sumProfits = sumProfits + getProfit(i);
-			for (j=i+1; j < getNumObjs(); j++)
-			{
-				if(solution.whereIsObject(i) == solution.whereIsObject(j))
-				{
-					sumProfits = sumProfits + getProfit(i,j);
-				}
-			}
-		}
+		cout << solution.whereIsObject(i)+1 << " ";
+	}*/
+
+	for (int i=0; i < _numFacilities; i++)
+	{
+		for(int j=0; j < _numFacilities; j++)
+		{	
+			//Si un edificio impar se pone en una localizacion impar se penaliza (*0.1)
+			if(i%2!=0 && j%2!=0)
+				cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j] * 1.10;
+			else	
+				cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j];
+		}	
+
 	}
 
-	return sumProfits;
+	return cost;
 }
 
-void MQKPInstance::readInstance(char *filename, int numKnapsacks) {
+
+void QAPInstance::readInstance(char *filename) {
 
 	/*
 	 *   1. leer el número de objetos
@@ -111,79 +76,49 @@ void MQKPInstance::readInstance(char *filename, int numKnapsacks) {
 	 *      . Multiplicar por 0.8
 	 *      . Dividir el resultado anterior entre el número de mochilas. Eso será la capacidad de cada mochila
 	 */
-	_numKnapsacks = numKnapsacks;
+	ifstream fichero;
+	fichero.open(filename);
+	int dato;
+	fichero >> dato;
 
-	ifstream fe;
-	fe.open(filename,ifstream::in);
-	if(!fe){
-		cerr << "Error en la apertura del fichero: " << filename << endl;
-		exit(-1);
-	}
-	string trush;
-	fe >> trush;
-	fe >> _numObjs;
+	//leemos el numero de edificios que sera el mismo que le de localizaciones
 
-	_profits = new double * [getNumObjs()];
-	if(!_profits)
+	_numLocations = dato;
+	_numFacilities = dato; 
+
+	char cadena[256];
+	fichero.getline(cadena, ' ');	//NOS SALTAMOS LA PRIMERA LINEA
+	
+	_flows = new int*[_numLocations];
+	_distances = new int*[_numLocations];
+	for(int i=0; i<_numLocations; i++)
 	{
-		cerr << "Error al reservar memoria para profits" << endl;
-		exit(-1);
+		_flows[i] = new int[_numLocations];
+		_distances[i] = new int [_numLocations];
 	}
-	int i;
-	for(i=0; i<getNumObjs(); i++){
-		_profits[i] = new double[getNumObjs()];
-		if(!_profits[i])
-		{
-			cerr << "Error al reservar memoria para profits [i]" << endl;
-			exit(-1);
+
+	//3. Leer la matriz 
+	//int aux; 
+	for(int i = 0; i < _numLocations ; i++){
+		for (int j = 0; j< _numLocations; j++){
+			fichero >> dato;
+			_flows[i][j] = dato;
+			//std::cout << "Flujo "<<i<<" "<<j<<" :"<<dato<<"\n";
 		}
-	}
+	} 
 
-	for(i=0; i<getNumObjs(); i++)
-	{
-		fe >> _profits[i][i];
-	}
-	int j;
-	for(i=0; i<getNumObjs(); i++)
-	{
-		for (j=i+1; j<getNumObjs(); j++)
-		{
-			fe >> _profits[i][j];
-			_profits[j][i] = _profits[i][j];
+	fichero.getline(cadena, ' ');	//NOS SALTAMOS
+	
+	for(int i = 0; i < _numLocations ; i++){
+		for (int j = 0; j< _numLocations; j++){
+			fichero >> dato;
+			_distances[i][j] = dato;
+			//std::cout << "distancia "<<i<<" "<<j<<" :"<<dato<<"\n";
+
 		}
-	}
+	} 
 
-	fe >> trush;
-	fe >> trush;
-
-	_weights = new double[getNumObjs()];
-	if(!_weights)
-	{
-		cout << "Error al reservar memoria para weights" << endl;
-		exit(-1);
-	}
-
-	double suma=0;
-
-	for(i=0; i<getNumObjs(); i++)
-	{
-		fe >> _weights[i];
-		suma = suma + _weights[i];
-	}
-
-	_capacities = new double[getNumKnapsacks()+1];
-	if(!_capacities)
-	{
-		cout << "Error al reservar memoria para capacities" << endl;
-		exit(-1);
-	}
-
-	double capacity = suma * 0.8 / getNumKnapsacks();
-	for(i=1; i<=getNumKnapsacks(); i++)
-	{
-		_capacities[i] = capacity;
-	}
-	fe.close();
+	fichero.close();
 }
 
 int MQKPInstance::getNumObjs() {
@@ -210,82 +145,48 @@ double MQKPInstance::getProfit(int o1, int o2){
 	return _profits[o1][o2];
 }
 
-void MQKPInstance::randomPermutation(int size, vector<int>& perm) {
+void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 
-	/**
+	/** TODO
 	 * 1. Vacía el vector perm
 	 * 2. Llénalo con la permutación identidad
 	 * 3. Recórrelo intercambiando cada elemento con otro escogido de forma aleatoria.
 	 */
+	int numero;
+	srand(time(NULL));
 	perm.clear();
 
-	for (int i = 0; i < size; i++)
+	for (int i=0; i<size; i++)
+	{
 		perm.push_back(i);
+	}
 
-	for (int i = 0; i < size; i++){
-		int pos = rand() % size;
+	for (int i=0; i<size; i++)
+	{
+		numero = rand () % size;
 		int aux = perm[i];
-		perm[i] = perm[pos];
-		perm[pos] = aux;
+		perm[i]=perm[numero];
+		perm[numero]=aux;
 	}
 }
+double QAPInstance::getDeltaSumCost(QAPSolution& solution, int indexFacility1, int indexFacility2) {
+	double deltaSumProfits = 0.0;
 
-double MQKPInstance::getDeltaSumProfits(MQKPSolution& solution, int indexObject,
-		int indexKnapsack) {
+	int location1 = solution.whereIsFacility(indexFacility1);
+	int location2 = solution.whereIsFacility(indexFacility2);
 
-	double deltaSumProfits = 0;
+	double actualSumCost = 0.0;
+	actualSumCost = getSumCost(solution);
 
-	/* Si el objeto estaba en una mochila, resta a deltaSumProfits su beneficio más el beneficio
-	 * conjunto con cualquier otro objeto que estuviese en esa misma mochila
-	 */
+	solution.putFacility(indexFacility1, location2);
+	solution.putFacility(indexFacility2, location1);
+	
+	deltaSumProfits = getSumCost(solution) - actualSumCost;
 
-	int originKnapsack = solution.whereIsObject(indexObject);
-
-	if (originKnapsack > 0){
-		deltaSumProfits -= this->getProfit(indexObject);
-
-		for (int i = 0; i < _numObjs; i++){
-
-			if (solution.whereIsObject(i) == originKnapsack && i != indexObject){
-				deltaSumProfits -= this->getProfit(indexObject, i);
-			}
-		}
-	}
-
-	/* Si el objeto se va a insertar en alguna mochila, suma a deltaSumProfits su beneficio más el beneficio
-	 * conjunto con cualquier otro objeto que ya esté en dicha mochila
-	 */
-
-	if (indexKnapsack > 0){
-		deltaSumProfits += this->getProfit(indexObject);
-
-		for (int i = 0; i < _numObjs; i++){
-
-			if (solution.whereIsObject(i) == indexKnapsack && i != indexObject){
-				deltaSumProfits += this->getProfit(indexObject, i);
-			}
-		}
-	}
+	solution.putFacility(indexFacility1, location1);
+	solution.putFacility(indexFacility2, location2);
 
 	return deltaSumProfits;
-}
 
-double MQKPInstance::getDeltaMaxCapacityViolation(MQKPSolution& solution,
-		int indexObject, int indexKnapsack) {
 
-	/**
-	 * 1. Obten la mochila donde está el objeto
-	 * 2. Obten la máxima violación actual de la solución
-	 * 3. Asigna el objeto a la nueva mochila en solución
-	 * 4. Obten la nueva violación de la solución
-	 * 5. Deshaz el cambio anterior, volviendo a poner el objeto en la mochila en la que estaba
-	 * 6. Devuelve la diferencia (nueva violación - violación actual)
-	 */
-	int originKnapsack = solution.whereIsObject(indexObject);
-	double originViolation = getMaxCapacityViolation(solution);
-	solution.putObjectIn(indexObject, indexKnapsack);
-	double newViolation = getMaxCapacityViolation(solution);
-	solution.putObjectIn(indexObject, originKnapsack);
-
-	return (newViolation - originViolation);
 }

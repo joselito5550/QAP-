@@ -23,9 +23,9 @@ void MQKPLocalSearch::optimise(MQKPInstance& instance,
 
 	_results.clear();
 	_results.push_back(solution.getFitness());
-	MQKPObjectAssignmentOperation operation;
-
-	/**
+	QAPObjectAssignmentOperation operation;
+	//bool mejorado=false;
+	/** TODO
 	 * 1. Aplica una vez la exploración del vecindario y almacena si se ha conseguido o no mejorar la solución
 	 *
 	 * 2. Mientras se haya conseguido mejorar la solución
@@ -34,11 +34,17 @@ void MQKPLocalSearch::optimise(MQKPInstance& instance,
 	 *   c. Aplica una nueva exploración del vecindario
 	 */
 
-	bool gotBetter = explorer.findOperation(instance, solution, operation);
-
-	while (gotBetter) {
+	//while (explorer.findOperation(instance, solution, operation)==true)
+/*	while(mejorado){
+		cout << "hola" << endl;
 		operation.apply(solution);
 		_results.push_back(solution.getFitness());
-		gotBetter = explorer.findOperation(instance, solution, operation);
+		mejorado=explorer.findOperation(instance, solution, operation);
+	}*/
+
+	while (explorer.findOperation(instance, solution, operation)==true)
+	{
+		operation.apply(solution);
+		_results.push_back(solution.getFitness());
 	}
 }

@@ -30,12 +30,11 @@ protected:
 	 * _weights Vector con los pesos de los objetos. HAY QUE RESERVAR SU MEMORIA
 	 * _capacities Vector con las capacidades de las mochilas. HAY QUE RESERVAR SU MEMORIA. Para evitar problemas, reservadlo con capacidad (1 + numKnapsacks) y utilizadlo desde el índice 1 en adelante
 	 */
-	int _numKnapsacks;
-	int _numObjs;
-	double ** _profits;
-	double * _weights;
-	double * _capacities;
 
+	int _numFacilities;
+	int _numLocations;
+	int** _distances;
+	int** _flows;
 public:
 	/**
 	 * Constructor por defecto
@@ -52,31 +51,31 @@ public:
 	 * @param[in] filename Nombre del fichero donde están los datos de la instancia
 	 * @param[in] numKnapsacks Entero que indica el número de mochilas que se va a considerar. Este no se lee del fichero, sino que lo establecéis vosotros
 	 */
-	void readInstance(char *filename, int numKnapsacks);
+void readInstance(char *filename);
 
 	/**
 	 * Funciones getter que devuelven la información que se consulte acerca de la instancia del problema
 	 */
-	int getNumObjs();
-	int getNumKnapsacks();
-	double getWeight(int object);
-	double getCapacity(int knapsack);
-	double getProfit(int object);
-	double getProfit(int o1, int o2);
+
+	int getNumLocations(){return _numLocations;};
+
+	double getFlow(int i, int j){return _flows[i][j];}
+
+	double getDistance(int o1, int o2){return _distances[o1][o2];}
 
 	/**
 	 * Función que devuelve por cuanto se viola la capacidad de la mochila que está más cargada de más
 	 * @param[in] solution Referencia a un objeto que representa una solución al problema
 	 * @return Máxima violación de las capacidades de las mochilas
 	 */
-	double getMaxCapacityViolation(MQKPSolution &solution);
+	//ELIMINADA double getMaxCapacityViolation(QAPSolution &solution);
 
 	/**
 	 * Función que calcula la suma de beneficios individuales y cuadráticos de los objetos en mochilas
 	 * @param[in] solution Referencia a un objeto que representa una solución al problema
 	 * @return Suma de los beneficios individuales y cuadráticos de los objetos en las mochilas
 	 */
-	double getSumProfits(MQKPSolution &solution);
+	double getSumCost(QAPSolution &solution);
 
 	/**
 	 * Función que genera una permutación de los enteros de 0 a (size - 1)
@@ -94,7 +93,7 @@ public:
 	 * @return Diferencia en la suma de los beneficios si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
 	 *
 	 */
-	double getDeltaSumProfits(MQKPSolution &solution, int indexObject, int indexKnapsack);
+	double getDeltaSumCost(QAPSolution &solution, int indexObject, int indexKnapsack);
 
 	/**
 	 * Función que calcula la diferencia en la máxima violación de alguna de las capacidades de las mochilas si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
@@ -105,7 +104,8 @@ public:
 	 * @return Diferencia en la suma de los beneficios si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
 	 *
 	 */
-	double getDeltaMaxCapacityViolation(MQKPSolution &solution, int indexObject, int indexKnapsack);
+	//ELIMINADA double getDeltaMaxCapacityViolation(QAPSolution &solution, int indexObject, int indexKnapsack);
+
 };
 
 #endif
