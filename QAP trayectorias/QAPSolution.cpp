@@ -14,32 +14,32 @@ using namespace std;
 
 QAPSolution::QAPSolution(QAPInstance &instance) {
 	// inicializando las variables miembro. Inicialmente, todos los objetos estarán fuera de las mochilas ( = 0)
-	_numObjs = instance.getNumObjs();
+	_numFacilities = instance.getNumObjs();
 	_fitness = 0;
-	_sol = new int[_numObjs];
+	_sol = new int[_numFacilities];
 	if (!_sol) {
 		cerr << "No se ha reservado memoria correctamente para _sol" << endl;
 		exit(-1);
 	}
 	int i;
-	for (i = 0; i < _numObjs; i++) {
+	for (i = 0; i < _numFacilities; i++) {
 		_sol[i] = 0;
 	}
 }
 
 QAPSolution::~QAPSolution() {
 	//
-	_numObjs = 0;
-	_fitness = 0;
+	_numFacilities = 0;
+	_fitness = 0.0;
 	delete [] _sol;
 }
 
-void QAPSolution::putObjectIn(int object, int knapsack) {
-	_sol[object] = knapsack;
+void QAPSolution::putObjectIn(int facility, int location) {
+	_sol[facility] = location;
 }
 
 int QAPSolution::whereIsObject(int object) {
-	return _sol[object];
+	return _sol[facility];
 }
 
 double QAPSolution::getFitness() const {
@@ -56,8 +56,8 @@ void QAPSolution::copy(QAPSolution& solution) {
 	 * 1. Copiar las asignaciones de objetos a mochilas
 	 * 2. copiar el fitness
 	 */
-	for (int i = 0; i < _numObjs; i++)
+	for (int i = 0; i < _numFacilities; i++)
 		_sol[i] = solution._sol[i];
 
-	_fitness = solution._fitness;
+	_fitness = solution.getFitness();
 }

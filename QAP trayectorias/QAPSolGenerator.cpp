@@ -13,12 +13,15 @@
 
 void QAPSolGenerator::genRandomSol(QAPInstance &instance, QAPSolution &solution){
 
-	int numObjs = instance.getNumObjs();
-	int numKnapsacks = instance.getNumKnapsacks();
+	int numLocation = instance.getNumLocations();
+	vector<Randomhelp> aux;
 
-	for (int i = 0; i < numObjs; i++){
-		int randomKnapsack = rand() % (numKnapsacks + 1);
-		solution.putObjectIn(i, randomKnapsack);
+	vector<int> perm;
+	QAPInstance::randomPermutation(numLocation, perm);
+	for(int i=0; i<numLocation; i++)
+	{
+		solution.putFacility(i,perm[i]);
 	}
+
 }
 

@@ -121,29 +121,6 @@ void QAPInstance::readInstance(char *filename) {
 	fichero.close();
 }
 
-int QAPInstance::getNumObjs() {
-	return _numObjs;
-}
-
-int QAPInstance::getNumKnapsacks() {
-	return _numKnapsacks;
-}
-
-double QAPInstance::getWeight(int object) {
-	return _weights[object];
-}
-
-double QAPInstance::getCapacity(int knapsack){
-	return _capacities[knapsack];
-}
-
-double QAPInstance::getProfit(int object){
-	return _profits[object][object];
-}
-
-double QAPInstance::getProfit(int o1, int o2){
-	return _profits[o1][o2];
-}
 
 void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 

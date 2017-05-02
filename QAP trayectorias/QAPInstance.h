@@ -51,7 +51,7 @@ public:
 	 * @param[in] filename Nombre del fichero donde están los datos de la instancia
 	 * @param[in] numKnapsacks Entero que indica el número de mochilas que se va a considerar. Este no se lee del fichero, sino que lo establecéis vosotros
 	 */
-void readInstance(char *filename);
+	void readInstance(char *filename);
 
 	/**
 	 * Funciones getter que devuelven la información que se consulte acerca de la instancia del problema

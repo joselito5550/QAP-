@@ -83,7 +83,7 @@ void runATSExperiment(vector<double> &currentResults,
 	QAPTabuSearch ts;
 	QAPStopCondition stopCond;
 	QAPEvaluator::resetNumEvaluations();
-	ts.initialise(&instance, ((unsigned)(instance.getNumObjs() / 2.5)));
+	ts.initialise(&instance, ((unsigned)(instance.getNumLocations() / 2.5)));
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria

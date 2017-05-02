@@ -29,7 +29,7 @@ protected:
 	 * _fitness valor double que almacena la calidad de la solución
 	 */
 	int * _sol;
-	int _numObjs;
+	int _numFacilities;
 	double _fitness;
 
 public:
@@ -49,14 +49,14 @@ public:
 	 * @param[in] object Índice del objeto a insertar en la mochila indicada
 	 * @param[in] knapsack Índice de la mochila donde insertar el objeto
 	 */
-	void putObjectIn(int object, int knapsack);
+	void putFacility(int facility, int location);
 
 	/**
 	 * Función que devuelve la mochila en la que está insertado un objeto
 	 * @param[in] object Índice del objeto consultado
 	 * @return Índice de la mochila en la que está insertado el objeto
 	 */
-	int whereIsObject(int object);
+	int whereIsFacility(int facility);
 
 	/**
 	 * Función que devuelve el fitness de la solución
