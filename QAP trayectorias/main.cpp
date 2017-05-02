@@ -12,15 +12,15 @@
 #define MAX_SECONS_PER_RUN 5
 #define MAX_SOLUTIONS_PER_RUN 100000
 
-#include "MQKPEvaluator.h"
-#include "MQKPInstance.h"
-#include "MQKPSolGenerator.h"
-#include "MQKPSolution.h"
-#include "MQKPSimulatedAnnealing.h"
-#include "MQKPTabuSearch.h"
-#include "MQKPGrasp.h"
-#include "MQKPIteratedGreedy.h"
-#include "MQKPStopCondition.h"
+#include "QAPEvaluator.h"
+#include "QAPInstance.h"
+#include "QAPSolGenerator.h"
+#include "QAPSolution.h"
+#include "QAPSimulatedAnnealing.h"
+#include "QAPTabuSearch.h"
+#include "QAPGrasp.h"
+#include "QAPIteratedGreedy.h"
+#include "QAPStopCondition.h"
 #include "Timer.h"
 
 #include <iostream>
@@ -37,19 +37,19 @@ extern unsigned int seeds[];
  * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
  */
 void runASAExperiment(vector<double> &currentResults,
-		vector<double> &bestSoFarResults, MQKPInstance &instance) {
+		vector<double> &bestSoFarResults, QAPInstance &instance) {
 
 	//Inicialización
-	MQKPSolution initialSolution(instance);
-	MQKPSimulatedAnnealing sa;
-	MQKPStopCondition stopCond;
-	MQKPEvaluator::resetNumEvaluations();
+	QAPSolution initialSolution(instance);
+	QAPSimulatedAnnealing sa;
+	QAPStopCondition stopCond;
+	QAPEvaluator::resetNumEvaluations();
 	sa.initialise(0.9, 10, 0.9999, 10, instance);
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria
-	MQKPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = MQKPEvaluator::computeFitness(instance,
+	QAPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,
 			initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
@@ -76,19 +76,19 @@ void runASAExperiment(vector<double> &currentResults,
  * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
  */
 void runATSExperiment(vector<double> &currentResults,
-		vector<double> &bestSoFarResults, MQKPInstance &instance) {
+		vector<double> &bestSoFarResults, QAPInstance &instance) {
 
 	//Inicialización
-	MQKPSolution initialSolution(instance);
-	MQKPTabuSearch ts;
-	MQKPStopCondition stopCond;
-	MQKPEvaluator::resetNumEvaluations();
+	QAPSolution initialSolution(instance);
+	QAPTabuSearch ts;
+	QAPStopCondition stopCond;
+	QAPEvaluator::resetNumEvaluations();
 	ts.initialise(&instance, ((unsigned)(instance.getNumObjs() / 2.5)));
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria
-	MQKPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = MQKPEvaluator::computeFitness(instance,
+	QAPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,
 			initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
@@ -115,19 +115,19 @@ void runATSExperiment(vector<double> &currentResults,
  * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
  */
 void runAGraspExperiment(vector<double> &currentResults,
-		vector<double> &bestSoFarResults, MQKPInstance &instance) {
+		vector<double> &bestSoFarResults, QAPInstance &instance) {
 
 	//Inicialización
-	MQKPSolution initialSolution(instance);
-	MQKPGrasp grasp;
-	MQKPStopCondition stopCond;
-	MQKPEvaluator::resetNumEvaluations();
+	QAPSolution initialSolution(instance);
+	QAPGrasp grasp;
+	QAPStopCondition stopCond;
+	QAPEvaluator::resetNumEvaluations();
 	grasp.initialise(0.25, instance);
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria para inicialiar la mejor solución
-	MQKPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = MQKPEvaluator::computeFitness(instance,
+	QAPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,
 			initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
@@ -153,19 +153,19 @@ void runAGraspExperiment(vector<double> &currentResults,
  * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
  */
 void runAIGExperiment(vector<double> &currentResults,
-		vector<double> &bestSoFarResults, MQKPInstance &instance) {
+		vector<double> &bestSoFarResults, QAPInstance &instance) {
 
 	//Inicialización
-	MQKPSolution initialSolution(instance);
-	MQKPIteratedGreedy ig;
-	MQKPStopCondition stopCond;
-	MQKPEvaluator::resetNumEvaluations();
+	QAPSolution initialSolution(instance);
+	QAPIteratedGreedy ig;
+	QAPStopCondition stopCond;
+	QAPEvaluator::resetNumEvaluations();
 	ig.initialise(0.25, instance);
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria para inicialiar la mejor solución
-	MQKPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = MQKPEvaluator::computeFitness(instance,
+	QAPSolGenerator::genRandomSol(instance, initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,
 			initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
@@ -196,7 +196,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 	for (unsigned int iInstance = 1; iInstance < numMainArgs; iInstance += 2) {
 
 		//Leer la instancia y crear la estructuras de datos necesarias para guardar los resultados
-		MQKPInstance instance;
+		QAPInstance instance;
 		vector<vector<double>*>* resultsOnThisInstance = new vector<
 				vector<double>*>;
 		results.push_back(resultsOnThisInstance);

@@ -1,19 +1,19 @@
 /*
- * MQKPIteratedGreedy.cpp
+ * QAPIteratedGreedy.cpp
  *
- * Fichero que define las funciones de la clase MQKPIteratedGreedy. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define las funciones de la clase QAPIteratedGreedy. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPIteratedGreedy.h"
-#include "MQKPObjectAssignmentOperation.h"
-#include "MQKPSolution.h"
+#include "QAPIteratedGreedy.h"
+#include "QAPObjectAssignmentOperation.h"
+#include "QAPSolution.h"
 #include <iostream>
 
 using namespace std;
 
-void MQKPIteratedGreedy::chooseOperation(MQKPObjectAssignmentOperation& operation) {
+void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation) {
 
 	int bestObj = 0;
 	int bestKnapsack = 0;
@@ -42,7 +42,7 @@ void MQKPIteratedGreedy::chooseOperation(MQKPObjectAssignmentOperation& operatio
 				//TODO Calcular delta fitness, densidad como deltaFitness dividido por el peso, y actualizar la mejor opción
 				int indexKnapsack = j;
 
-				double deltaFitness = MQKPEvaluator::computeDeltaFitness(*_instance,*_sol, i,indexKnapsack);
+				double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol, i,indexKnapsack);
 				double density = deltaFitness / (_instance->getWeight(indexObj));
 
 				if (deltaFitness > bestDeltaFitness || initialisedBestDensity == false) {
@@ -59,10 +59,10 @@ void MQKPIteratedGreedy::chooseOperation(MQKPObjectAssignmentOperation& operatio
 	operation.setValues(bestObj, bestKnapsack, bestDeltaFitness);
 }
 
-void MQKPIteratedGreedy::rebuild() {
+void QAPIteratedGreedy::rebuild() {
 
 	/** Seleccionar la primera operación */
-	MQKPObjectAssignmentOperation operation;
+	QAPObjectAssignmentOperation operation;
 	chooseOperation(operation);
 
 	/** TODO
@@ -81,7 +81,7 @@ void MQKPIteratedGreedy::rebuild() {
 	}
 }
 
-void MQKPIteratedGreedy::destroy() {
+void QAPIteratedGreedy::destroy() {
 
 	/**
 	 * TODO
@@ -99,20 +99,20 @@ void MQKPIteratedGreedy::destroy() {
 		}
 	}
 
-	double fitness = MQKPEvaluator::computeFitness(*_instance, *_sol);
+	double fitness = QAPEvaluator::computeFitness(*_instance, *_sol);
 	_sol->setFitness(fitness);
 	_results.push_back(_sol->getFitness());
 }
 
-void MQKPIteratedGreedy::initialise(double alpha, MQKPInstance& instance) {
-	_sol = new MQKPSolution(instance);
-	_bestSolution = new MQKPSolution(instance);
+void QAPIteratedGreedy::initialise(double alpha, QAPInstance& instance) {
+	_sol = new QAPSolution(instance);
+	_bestSolution = new QAPSolution(instance);
 	_bestSolution->copy(*_sol);
 	_instance = &instance;
 	_alpha = alpha;
 }
 
-void MQKPIteratedGreedy::run(MQKPStopCondition& stopCondition) {
+void QAPIteratedGreedy::run(QAPStopCondition& stopCondition) {
 
 	if (_sol == NULL) {
 		cerr << "IG was not initialised" << endl;
@@ -122,7 +122,7 @@ void MQKPIteratedGreedy::run(MQKPStopCondition& stopCondition) {
 	/** Crear la primera solución */
 	rebuild();
 
-	if (MQKPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
+	if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
 		_bestSolution->copy(*_sol);
 
 	/**
@@ -139,7 +139,7 @@ void MQKPIteratedGreedy::run(MQKPStopCondition& stopCondition) {
 		rebuild();
 		_results.push_back(_sol->getFitness());
 
-		if (MQKPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0){
+		if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0){
 			 _bestSolution->copy(*_sol);
 			 _bestSolution->setFitness(_sol->getFitness());
 		}

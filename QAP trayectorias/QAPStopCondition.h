@@ -1,21 +1,21 @@
 /*
- * MQKPStopCondition.h
+ * QAPStopCondition.h
  *
- * Fichero que define la clase MQKPStopCondition. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPStopCondition. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPSTOPCONDITION_H_
-#define INCLUDE_MQKPSTOPCONDITION_H_
+#ifndef INCLUDE_QAPSTOPCONDITION_H_
+#define INCLUDE_QAPSTOPCONDITION_H_
 
-#include "MQKPEvaluator.h"
+#include "QAPEvaluator.h"
 #include "Timer.h"
 
 /**
  * Clase que define algunas condiciones de parada bastante comunes en las metaheurísticas, e informa del requerimiento de pararla cuando se cumple alguna de ellas
  */
-class MQKPStopCondition{
+class QAPStopCondition{
 	/**
 	 * Variables miembro de la clase
 	 * _maxEvaluations unsigned Máximo número de evaluaciones de soluciones
@@ -34,7 +34,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	MQKPStopCondition(){
+	QAPStopCondition(){
 		_maxEvaluations = 0;
 		_maxIterations = 0;
 		_maxTime = 0;
@@ -45,12 +45,12 @@ public:
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPStopCondition(){};
+	virtual ~QAPStopCondition(){};
 
 	virtual bool reached(){
 		bool result = false;
 
-		if (_maxEvaluations > 0 && MQKPEvaluator::getNumEvaluations() >= _maxEvaluations)
+		if (_maxEvaluations > 0 && QAPEvaluator::getNumEvaluations() >= _maxEvaluations)
 			result = true;
 
 		if (_maxIterations > 0 && _numIterations >= _maxIterations)
@@ -85,4 +85,4 @@ public:
 
 
 
-#endif /* INCLUDE_MQKPSTOPCONDITION_H_ */
+#endif /* INCLUDE_QAPSTOPCONDITION_H_ */

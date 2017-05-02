@@ -1,25 +1,25 @@
 /*
- * MQKPLocalSearch.cpp
+ * QAPLocalSearch.cpp
  *
- * Fichero que define las funciones de la clase MQKPLocalSearch. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define las funciones de la clase QAPLocalSearch. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPLocalSearch.h"
-#include "MQKPInstance.h"
-#include "MQKPSolution.h"
-#include "MQKPNeighExplorer.h"
-#include "MQKPObjectAssignmentOperation.h"
+#include "QAPLocalSearch.h"
+#include "QAPInstance.h"
+#include "QAPSolution.h"
+#include "QAPNeighExplorer.h"
+#include "QAPObjectAssignmentOperation.h"
 
-MQKPLocalSearch::MQKPLocalSearch() {
+QAPLocalSearch::QAPLocalSearch() {
 }
 
-MQKPLocalSearch::~MQKPLocalSearch() {
+QAPLocalSearch::~QAPLocalSearch() {
 }
 
-void MQKPLocalSearch::optimise(MQKPInstance& instance,
-		MQKPNeighExplorer& explorer, MQKPSolution& solution) {
+void QAPLocalSearch::optimise(QAPInstance& instance,
+		QAPNeighExplorer& explorer, QAPSolution& solution) {
 
 	_results.clear();
 	_results.push_back(solution.getFitness());

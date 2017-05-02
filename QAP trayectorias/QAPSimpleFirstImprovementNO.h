@@ -1,28 +1,28 @@
 /*
- * MQKPSimpleFirstImprovementNO.h
+ * QAPSimpleFirstImprovementNO.h
  *
- * Fichero que define la clase MQKPSimpleFirstImprovementNO. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPSimpleFirstImprovementNO. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPSIMPLEFIRSTIMPROVEMENTNO_H_
-#define INCLUDE_MQKPSIMPLEFIRSTIMPROVEMENTNO_H_
+#ifndef INCLUDE_QAPSIMPLEFIRSTIMPROVEMENTNO_H_
+#define INCLUDE_QAPSIMPLEFIRSTIMPROVEMENTNO_H_
 
-#include "MQKPNeighExplorer.h"
-#include "MQKPSolution.h"
-#include "MQKPChangeOperation.h"
+#include "QAPNeighExplorer.h"
+#include "QAPSolution.h"
+#include "QAPChangeOperation.h"
 /**
  * Clase que se encarga de explorar el vecindario de una solución dada, devolviendo la primera operación de asignación de un objeto a una mochila que encuentre que mejore la calidad de la solución recibida. En caso de que no exista ninguna operación que mejore la calidad de la solución recibida, entonces devolverá FALSE
  */
-class MQKPSimpleFirstImprovementNO : public MQKPNeighExplorer{
+class QAPSimpleFirstImprovementNO : public QAPNeighExplorer{
 
 public:
 
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPSimpleFirstImprovementNO(){
+	virtual ~QAPSimpleFirstImprovementNO(){
 
 	}
 
@@ -34,8 +34,8 @@ public:
 	 *
 	 * @return true si la operación devuelta mejora a solution; false, si no hay ninguna operación en la vecindad que pueda mejorar a solution
 	 */
-	virtual bool findOperation(MQKPInstance &instance, MQKPSolution &solution, MQKPChangeOperation &operation);
+	virtual bool findOperation(QAPInstance &instance, QAPSolution &solution, QAPChangeOperation &operation);
 };
 
 
-#endif /* INCLUDE_MQKPSIMPLEFIRSTIMPROVEMENTNO_H_ */
+#endif /* INCLUDE_QAPSIMPLEFIRSTIMPROVEMENTNO_H_ */

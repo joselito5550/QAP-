@@ -1,42 +1,42 @@
 /*
- * MQKPSimulatedAnnealing.cpp
+ * QAPSimulatedAnnealing.cpp
  *
- * Fichero que define las funciones de la clase MQKPSimulatedAnnealing. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define las funciones de la clase QAPSimulatedAnnealing. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPSimulatedAnnealing.h"
-#include "MQKPSolution.h"
-#include "MQKPSolGenerator.h"
-#include "MQKPEvaluator.h"
+#include "QAPSimulatedAnnealing.h"
+#include "QAPSolution.h"
+#include "QAPSolGenerator.h"
+#include "QAPEvaluator.h"
 #include <cmath>
 #include <iostream>
 #include <cstdlib>
 
 using namespace std;
 
-void MQKPSimulatedAnnealing::setSolution(MQKPSolution* solution) {
+void QAPSimulatedAnnealing::setSolution(QAPSolution* solution) {
 	if (_T <= 0 || _annealingFactor <= 0){
 		cerr << "Simulated annealing has not been initialised" << endl;
 		exit(-1);
 	}
 
 	if (_solution != NULL){
-		cerr << "No se debe invocar más de una vez el método MQKPTabuSearch::setSolution" << endl;
+		cerr << "No se debe invocar más de una vez el método QAPTabuSearch::setSolution" << endl;
 		exit(1);
 	}
 
 	this->_solution = solution;
 
 	if (_bestSolution == NULL){
-		_bestSolution = new MQKPSolution(*_instance);
+		_bestSolution = new QAPSolution(*_instance);
 	}
 
 	_bestSolution->copy(*solution);
 }
 
-void MQKPSimulatedAnnealing::run(MQKPStopCondition& stopCondition) {
+void QAPSimulatedAnnealing::run(QAPStopCondition& stopCondition) {
 
 	if (_T <= 0 || _annealingFactor <= 0){
 		cerr << "Simulated annealing has not been initialised" << endl;
@@ -65,13 +65,13 @@ void MQKPSimulatedAnnealing::run(MQKPStopCondition& stopCondition) {
 	while (stopCondition.reached()==false){
 		int indexObject = rand()%numObjs;
 		int indexKnapsack = rand()%(numKnapsacks+1);
-		double deltaFitness = MQKPEvaluator::computeDeltaFitness(*_instance, *_solution, indexObject, indexKnapsack);
+		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance, *_solution, indexObject, indexKnapsack);
 
 		if (accept(deltaFitness)){
 			_solution->putObjectIn(indexObject, indexKnapsack);
 			_solution->setFitness(_solution->getFitness() + deltaFitness);
 			//DUDA Actualizar la mejor solucion hasta el momento esta ya hecho o es la linea de codigo comentada?
-			if (MQKPEvaluator::compare(_solution->getFitness(), _bestSolution->getFitness()) > 0){
+			if (QAPEvaluator::compare(_solution->getFitness(), _bestSolution->getFitness()) > 0){
 				_bestSolution->copy(*_solution);
 				//setSolution(_solution);
 			}
@@ -87,7 +87,7 @@ void MQKPSimulatedAnnealing::run(MQKPStopCondition& stopCondition) {
 	}
 }
 
-bool MQKPSimulatedAnnealing::accept(double deltaFitness) {
+bool QAPSimulatedAnnealing::accept(double deltaFitness) {
 	/**
 	 * TODO
 	 * .Calcular la probabilidad de aceptar el cambio, que será la exponencial de (la diferencia de fitness dividido por la temperatura)
@@ -102,7 +102,7 @@ bool MQKPSimulatedAnnealing::accept(double deltaFitness) {
 	 */
 	double auxDeltaFitness = exp(deltaFitness/_T);
 
-	if (MQKPEvaluator::isToBeMinimised()){
+	if (QAPEvaluator::isToBeMinimised()){
 		//auxDeltaFitness *= -1;	//DUDA ni idea de si es así
 		auxDeltaFitness = 1;
 	}
@@ -113,7 +113,7 @@ bool MQKPSimulatedAnnealing::accept(double deltaFitness) {
 	//DUDA entonces para que es el auxDeltaFitness? si nos fijamos solo en el numero aleatorio y la prob de aceptacion
 }
 
-void MQKPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimates, double annealingFactor, unsigned itsPerAnnealing, MQKPInstance &instance) {
+void QAPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimates, double annealingFactor, unsigned itsPerAnnealing, QAPInstance &instance) {
 	_initialProb = initialProb;
 	_annealingFactor = annealingFactor;
 	_instance = &instance;
@@ -128,12 +128,12 @@ void MQKPSimulatedAnnealing::initialise(double initialProb, int numInitialEstima
 	 */
 
 	for (int i = 0; i < numInitialEstimates; i++){
-		MQKPSolution sol(instance);
-		MQKPSolGenerator::genRandomSol(instance, sol);
-		sol.setFitness(MQKPEvaluator::computeFitness(instance, sol));
+		QAPSolution sol(instance);
+		QAPSolGenerator::genRandomSol(instance, sol);
+		sol.setFitness(QAPEvaluator::computeFitness(instance, sol));
 		int indexObject = rand() % numObjs;
 		int indexKnapsack = rand() % (numKnapsacks + 1);
-		double deltaFitness = MQKPEvaluator::computeDeltaFitness(instance, sol, indexObject, indexKnapsack);
+		double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, sol, indexObject, indexKnapsack);
 		averageFDiffs += max(fabs(deltaFitness),10.); //He puesto una diferencia mínima de 10 para evitar cambios en el fitness demasiado pequeños (por ejemplo, cuando se modifica una mochila que no es la de la máxima violación (este método se podría mejorar)
 	}
 

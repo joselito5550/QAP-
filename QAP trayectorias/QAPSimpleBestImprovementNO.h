@@ -5,23 +5,23 @@
  *      Author: carlos
  */
 
-#ifndef INCLUDE_MQKPSIMPLEBESTIMPROVEMENTNO_H_
-#define INCLUDE_MQKPSIMPLEBESTIMPROVEMENTNO_H_
+#ifndef INCLUDE_QAPSIMPLEBESTIMPROVEMENTNO_H_
+#define INCLUDE_QAPSIMPLEBESTIMPROVEMENTNO_H_
 
-#include "MQKPNeighExplorer.h"
-#include "MQKPSolution.h"
-#include "MQKPChangeOperation.h"
+#include "QAPNeighExplorer.h"
+#include "QAPSolution.h"
+#include "QAPChangeOperation.h"
 /**
  * Clase que se encarga de explorar el vecindario de una solución dada, devolviendo la mejor operación de asignación de un objeto a una mochila entre las operaciones posibles, devolverá FALSE si la operación devuelta no mejora a la solución actual
  */
-class MQKPSimpleBestImprovementNO : public MQKPNeighExplorer{
+class QAPSimpleBestImprovementNO : public QAPNeighExplorer{
 
 public:
 
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPSimpleBestImprovementNO(){
+	virtual ~QAPSimpleBestImprovementNO(){
 
 	}
 
@@ -33,9 +33,9 @@ public:
 	 *
 	 * @return true si la operación devuelta mejora a solution; false, si no hay ninguna operación en la vecindad que pueda mejorar a solution
 	 */
-	virtual bool findOperation(MQKPInstance &instance, MQKPSolution &solution, MQKPChangeOperation &operation);
+	virtual bool findOperation(QAPInstance &instance, QAPSolution &solution, QAPChangeOperation &operation);
 
 };
 
 
-#endif /* INCLUDE_MQKPSIMPLEBESTIMPROVEMENTNO_H_ */
+#endif /* INCLUDE_QAPSIMPLEBESTIMPROVEMENTNO_H_ */

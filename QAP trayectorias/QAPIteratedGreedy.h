@@ -1,22 +1,22 @@
 /*
- * MQKPIteratedGreedy.h
+ * QAPIteratedGreedy.h
  *
- * Fichero que define la clase MQKPIteratedGreedy. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPIteratedGreedy. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPITERATEDGREEDY_H_
-#define INCLUDE_MQKPITERATEDGREEDY_H_
+#ifndef INCLUDE_QAPITERATEDGREEDY_H_
+#define INCLUDE_QAPITERATEDGREEDY_H_
 
-#include "MQKPMetaheuristic.h"
-#include "MQKPSolution.h"
-#include "MQKPObjectAssignmentOperation.h"
+#include "QAPMetaheuristic.h"
+#include "QAPSolution.h"
+#include "QAPObjectAssignmentOperation.h"
 
 /**
- * Clase que implementa la metaheurística Iterated Greedy para el MQKP, en la variante en la que la destrucción se aplica siempre sobre la mejor solución y no se aplica búsqueda local
+ * Clase que implementa la metaheurística Iterated Greedy para el QAP, en la variante en la que la destrucción se aplica siempre sobre la mejor solución y no se aplica búsqueda local
  */
-class MQKPIteratedGreedy : public MQKPMetaheuristic{
+class QAPIteratedGreedy : public QAPMetaheuristic{
 protected:
 
 	/**
@@ -26,8 +26,8 @@ protected:
 	 * _sol tiene la solución sobre la que trabaja Iterated Greedy durante las destrucciones y construcciones
 	 */
 	double _alpha;
-	MQKPInstance *_instance;
-	MQKPSolution *_sol;
+	QAPInstance *_instance;
+	QAPSolution *_sol;
 
 	/**
 	 * vector de doubles donde almacena la calidad de la última solución aceptada
@@ -38,7 +38,7 @@ protected:
 	 * Función que devuelve la mejor operación de asignación de un objeto sin asignar a una mochila
 	 * @param[out] operation Operación de asignación de un objeto a mochila seleccionada
 	 */
-	void chooseOperation(MQKPObjectAssignmentOperation &operation);
+	void chooseOperation(QAPObjectAssignmentOperation &operation);
 
 	/**
 	 * Función que reconstruye la solución _sol. Para ello, invoca repetidamente a la función chooseOperation hasta que no encuentra ninguna otra operación de asignación que mejore la solución actual.
@@ -55,7 +55,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	MQKPIteratedGreedy(){
+	QAPIteratedGreedy(){
 		_alpha = 0.;
 		_instance = NULL;
 		_sol = NULL;
@@ -64,7 +64,7 @@ public:
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPIteratedGreedy(){
+	virtual ~QAPIteratedGreedy(){
 
 		if (_bestSolution != NULL){
 			delete _bestSolution;
@@ -83,13 +83,13 @@ public:
 	 * @param[in] alpha Probabilidad entre 0 y 1 de sacar objetos de sus mochilas en la fase de destrucción
 	 * @param[in] instance Instancia del problema que se va a abordar
 	 */
-	void initialise(double alpha, MQKPInstance &instance);
+	void initialise(double alpha, QAPInstance &instance);
 
 	/**
 	 * Función que ejecuta la metaheurística hasta alcanzar la condición de parada
 	 * @param[in] stopCondition Condición de parada para la metaheurística
 	 */
-	virtual void run(MQKPStopCondition &stopCondition);
+	virtual void run(QAPStopCondition &stopCondition);
 
 	/**
 	 * Función que devuelve el vector con los resultados de las soluciones aceptadas, en cada paso, por la búsqueda local
@@ -103,4 +103,4 @@ public:
 
 
 
-#endif /* INCLUDE_MQKPITERATEDGREEDY_H_ */
+#endif /* INCLUDE_QAPITERATEDGREEDY_H_ */

@@ -1,18 +1,18 @@
 /**
- * MQKPSolution.h
+ * QAPSolution.h
  * 
- * Fichero que define la clase MQKPSolution. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPSolution. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef __MQKPSOLUTION_H__
-#define __MQKPSOLUTION_H__
+#ifndef __QAPSOLUTION_H__
+#define __QAPSOLUTION_H__
 
-#ifndef __MQKPINSTANCE_H__
-#include "MQKPInstance.h"
+#ifndef __QAPINSTANCE_H__
+#include "QAPInstance.h"
 #else
-class MQKPInstance;
+class QAPInstance;
 #endif
 
 /**
@@ -21,7 +21,7 @@ class MQKPInstance;
  * Sobre la representación de soluciones:
  * La representación de las soluciones será un vector de número enteros: de 1 a M para objetos que están en alguna de las M mochilas y 0 para objetos que no están en ninguna mochilas
  */
-class MQKPSolution {
+class QAPSolution {
 protected:
 	/* Definir las variables miembro
 	 * _sol Vector de enteros que será la representación interna de la solución al problema
@@ -35,14 +35,14 @@ protected:
 public:
 	/**
 	 * Constructor
-	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema MQKP
+	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema QAP
 	 */
-	MQKPSolution(MQKPInstance &instance);
+	QAPSolution(QAPInstance &instance);
 
 	/**
 	 * Destructor
 	 */
-	~MQKPSolution();
+	~QAPSolution();
 
 	/**
 	 * Función que asigna un objeto a la mochila indicada
@@ -75,7 +75,7 @@ public:
 	 * Función que copia la información de otra solución
 	 * @param[in] solution La solución de donde copiar la información
 	 */
-	void copy(MQKPSolution &solution);
+	void copy(QAPSolution &solution);
 };
 
 #endif

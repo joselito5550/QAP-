@@ -1,22 +1,22 @@
 /**
- * MQKPEvaluator.h
+ * QAPEvaluator.h
  * 
- * Fichero que define la clase MQKPEvaluator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPEvaluator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
 */
 
-#ifndef __MQKPEvaluator_H__
-#define __MQKPEvaluator_H__
+#ifndef __QAPEvaluator_H__
+#define __QAPEvaluator_H__
 
-#include "MQKPInstance.h"
-#include "MQKPSolution.h"
+#include "QAPInstance.h"
+#include "QAPSolution.h"
 
 /**
- * Clase que calcula el fitness de una solución al problema MQKP
+ * Clase que calcula el fitness de una solución al problema QAP
  */
 
-class MQKPEvaluator {
+class QAPEvaluator {
 
 protected:
 	/**
@@ -27,7 +27,7 @@ protected:
 public:
 	/**
 	 * Función que calcula el fitness de una solución
-	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema MQKP
+	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema QAP
 	 * @param[in] solution Referencia a un objeto que representa una solución al problema.
 	 * 
 	 * @return Fitness de la solución. Será negativa si se viola la capacidad de alguna mochila y positiva si la solución es factible. En ese caso, el valor es igual a la suma de los beneficios individuales y cuadráticos
@@ -36,7 +36,7 @@ public:
 
 	/**
 	 * Función que calcula la diferencia en fitness si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
-	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema MQKP
+	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema QAP
 	 * @param[in] solution Referencia a un objeto que representa una solución al problema.
 	 * @param[in] indexObject Índice del objeto que se pondría en otra mochila
 	 * @param[in] indexKnapsack Índice de la mochila donde se pondría el objeto. Puede ser 0, indicando que se saca el objeto de la mochila en la que esté

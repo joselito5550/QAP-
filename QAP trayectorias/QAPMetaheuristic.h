@@ -1,38 +1,38 @@
 /*
- * MQKPMetaheuristic.h
+ * QAPMetaheuristic.h
  *
- * Fichero que define la clase MQKPMetaheuristic. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPMetaheuristic. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPMETAHEURISTIC_H_
-#define INCLUDE_MQKPMETAHEURISTIC_H_
+#ifndef INCLUDE_QAPMETAHEURISTIC_H_
+#define INCLUDE_QAPMETAHEURISTIC_H_
 
-#include "MQKPSolution.h"
-#include "MQKPStopCondition.h"
+#include "QAPSolution.h"
+#include "QAPStopCondition.h"
 #include <cstdlib>
 
 /**
- * Clase abstracta que define los métodos comunes para las metaheurísticas para el MQKP.
+ * Clase abstracta que define los métodos comunes para las metaheurísticas para el QAP.
  */
-class MQKPMetaheuristic {
+class QAPMetaheuristic {
 
 protected:
-	MQKPSolution *_bestSolution;
+	QAPSolution *_bestSolution;
 
 public:
 	/**
 	 * Constructor
 	 */
-	MQKPMetaheuristic(){
+	QAPMetaheuristic(){
 		_bestSolution = NULL;
 	}
 
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPMetaheuristic(){
+	virtual ~QAPMetaheuristic(){
 
 		if (_bestSolution != NULL){
 			delete _bestSolution;
@@ -44,7 +44,7 @@ public:
 	 * Función que ejecuta la metaheurística hasta alcanzar la condición de parada
 	 * @param[in] stopCondition Condición de parada para la metaheurística
 	 */
-	virtual void run (MQKPStopCondition &stopCondition) = 0;
+	virtual void run (QAPStopCondition &stopCondition) = 0;
 
 
 	/**
@@ -52,11 +52,11 @@ public:
 	 * Es responsabilidad de cada metaheurística concreta el mantener actualizada la variable _bestSolution
 	 * @return La mejor solución encontradas hasta el momento
 	 */
-	MQKPSolution*& getBestSolution(){
+	QAPSolution*& getBestSolution(){
 		return _bestSolution;
 	}
 };
 
 
 
-#endif /* INCLUDE_MQKPMETAHEURISTIC_H_ */
+#endif /* INCLUDE_QAPMETAHEURISTIC_H_ */

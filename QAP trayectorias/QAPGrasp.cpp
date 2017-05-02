@@ -1,20 +1,20 @@
 /*
- * MQKPGrasp.cpp
+ * QAPGrasp.cpp
  *
- * Fichero que define las funciones de la clase MQKPGrasp. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define las funciones de la clase QAPGrasp. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPGrasp.h"
+#include "QAPGrasp.h"
 #include <vector>
-#include "MQKPSimpleFirstImprovementNO.h"
-#include "MQKPLocalSearch.h"
+#include "QAPSimpleFirstImprovementNO.h"
+#include "QAPLocalSearch.h"
 #include <iostream>
 
 using namespace std;
 
-void MQKPGrasp::chooseOperation(MQKPObjectAssignmentOperation& operation) {
+void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 
 	int bestObj = 0;
 	int bestKnapsack = 0;
@@ -40,7 +40,7 @@ void MQKPGrasp::chooseOperation(MQKPObjectAssignmentOperation& operation) {
 		int indexObj = rand()%(numObjs);
 		int indexKnapsack = 1+rand()%(numKnapsacks);
 
-		double deltaFitness = MQKPEvaluator::computeDeltaFitness(*_instance,*_sol,indexObj,indexKnapsack); //TODO obtener la mejora en fitness de dicha operación
+		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol,indexObj,indexKnapsack); //TODO obtener la mejora en fitness de dicha operación
 		double density = deltaFitness/(_instance->getWeight(indexObj)); //TODO calcular la densidad de dicha operación como la diferencia en fitness dividido por el peso del objeto
 
 		//TODO actualizar si resulta ser la mejor
@@ -58,7 +58,7 @@ void MQKPGrasp::chooseOperation(MQKPObjectAssignmentOperation& operation) {
 			bestDeltaFitness);
 }
 
-void MQKPGrasp::buildInitialSolution() {
+void QAPGrasp::buildInitialSolution() {
 
 	/**
 	 * TODO
@@ -72,7 +72,7 @@ void MQKPGrasp::buildInitialSolution() {
 	}
 
 	/** Seleccionar la primera operación */
-	MQKPObjectAssignmentOperation operation;
+	QAPObjectAssignmentOperation operation;
 	chooseOperation(operation);
 
 	/**
@@ -89,16 +89,16 @@ void MQKPGrasp::buildInitialSolution() {
 	}
 }
 
-void MQKPGrasp::initialise(double alpha, MQKPInstance& instance) {
+void QAPGrasp::initialise(double alpha, QAPInstance& instance) {
 
-	_sol = new MQKPSolution(instance);
-	_bestSolution = new MQKPSolution(instance);
+	_sol = new QAPSolution(instance);
+	_bestSolution = new QAPSolution(instance);
 	_bestSolution->copy(*_sol);
 	_instance = &instance;
 	_alpha = alpha;
 }
 
-void MQKPGrasp::run(MQKPStopCondition& stopCondition) {
+void QAPGrasp::run(QAPStopCondition& stopCondition) {
 
 	if (_sol == NULL) {
 		cerr << "GRASP was not initialised" << endl;
@@ -126,7 +126,7 @@ void MQKPGrasp::run(MQKPStopCondition& stopCondition) {
 			_results.push_back(result);
 		}
 
-		if (MQKPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
+		if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
 			_bestSolution->copy(*_sol);
 
 		stopCondition.notifyIteration();

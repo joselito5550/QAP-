@@ -1,18 +1,18 @@
 /*
- * MQKPSolution.cpp
+ * QAPSolution.cpp
  *
- * Fichero que define los métodos de la clase MQKPSolution. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define los métodos de la clase QAPSolution. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPSolution.h"
-#include "MQKPInstance.h"
+#include "QAPSolution.h"
+#include "QAPInstance.h"
 #include <iostream>
 
 using namespace std;
 
-MQKPSolution::MQKPSolution(MQKPInstance &instance) {
+QAPSolution::QAPSolution(QAPInstance &instance) {
 	// inicializando las variables miembro. Inicialmente, todos los objetos estarán fuera de las mochilas ( = 0)
 	_numObjs = instance.getNumObjs();
 	_fitness = 0;
@@ -27,30 +27,30 @@ MQKPSolution::MQKPSolution(MQKPInstance &instance) {
 	}
 }
 
-MQKPSolution::~MQKPSolution() {
+QAPSolution::~QAPSolution() {
 	//
 	_numObjs = 0;
 	_fitness = 0;
 	delete [] _sol;
 }
 
-void MQKPSolution::putObjectIn(int object, int knapsack) {
+void QAPSolution::putObjectIn(int object, int knapsack) {
 	_sol[object] = knapsack;
 }
 
-int MQKPSolution::whereIsObject(int object) {
+int QAPSolution::whereIsObject(int object) {
 	return _sol[object];
 }
 
-double MQKPSolution::getFitness() const {
+double QAPSolution::getFitness() const {
 	return _fitness;
 }
 
-void MQKPSolution::setFitness(double fitness) {
+void QAPSolution::setFitness(double fitness) {
 	_fitness = fitness;
 }
 
-void MQKPSolution::copy(MQKPSolution& solution) {
+void QAPSolution::copy(QAPSolution& solution) {
 
 	/*
 	 * 1. Copiar las asignaciones de objetos a mochilas

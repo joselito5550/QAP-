@@ -1,16 +1,16 @@
 /*
- * MQKPEvaluator.cpp
+ * QAPEvaluator.cpp
  *
- * Fichero que define los métodos de la clase MQKPEvaluator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define los métodos de la clase QAPEvaluator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPEvaluator.h"
-#include "MQKPInstance.h"
-#include "MQKPSolution.h"
+#include "QAPEvaluator.h"
+#include "QAPInstance.h"
+#include "QAPSolution.h"
 
-unsigned MQKPEvaluator::_numEvaluations = 0;
+unsigned QAPEvaluator::_numEvaluations = 0;
 
 double QAPEvaluator::computeFitness(QAPInstance &instance, QAPSolution &solution){
 
@@ -82,6 +82,6 @@ double QAPEvaluator::computeDeltaFitness(QAPInstance& instance,	QAPSolution& sol
 
 }
 
-void MQKPEvaluator::resetNumEvaluations() {
+void QAPEvaluator::resetNumEvaluations() {
 	_numEvaluations = 0;
 }

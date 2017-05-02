@@ -1,28 +1,28 @@
 /*
- * MQKPNeighExplorer.h
+ * QAPNeighExplorer.h
  *
- * Fichero que define la clase MQKPNeighExplorer. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPNeighExplorer. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPNEIGHEXPLORER_H_
-#define INCLUDE_MQKPNEIGHEXPLORER_H_
+#ifndef INCLUDE_QAPNEIGHEXPLORER_H_
+#define INCLUDE_QAPNEIGHEXPLORER_H_
 
-#include "MQKPSolution.h"
-#include "MQKPInstance.h"
-#include "MQKPChangeOperation.h"
+#include "QAPSolution.h"
+#include "QAPInstance.h"
+#include "QAPChangeOperation.h"
 
 /**
  * clase abstracta que define las operaciones de cualquier operador que explora la vecindad de una solución dada.
  */
-class MQKPNeighExplorer {
+class QAPNeighExplorer {
 public:
 
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPNeighExplorer(){}
+	virtual ~QAPNeighExplorer(){}
 
 	/**
 	 * Función que busca una operación que aplicada a la solución devuelva otra solución vecina. Se utilizará para buscar una solución vecina que la mejore, o la mejor de las soluciones vecinas.
@@ -33,9 +33,9 @@ public:
 	 *
 	 * @return Devuelve verdadero si ha encontrado una operación válida, que mejora la solution y que se ha almacenado en operation. Falso en otro caso
 	 */
-	virtual bool findOperation(MQKPInstance &instance, MQKPSolution &solution, MQKPChangeOperation &operation) = 0;
+	virtual bool findOperation(QAPInstance &instance, QAPSolution &solution, QAPChangeOperation &operation) = 0;
 };
 
 
 
-#endif /* INCLUDE_MQKPNEIGHEXPLORER_H_ */
+#endif /* INCLUDE_QAPNEIGHEXPLORER_H_ */

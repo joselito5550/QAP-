@@ -1,13 +1,13 @@
 /*
- * MQKPInstance.cpp
+ * QAPInstance.cpp
  *
- * Fichero que define los métodos de la clase MQKPInstance. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define los métodos de la clase QAPInstance. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#include "MQKPInstance.h"
-#include "MQKPSolution.h"
+#include "QAPInstance.h"
+#include "QAPSolution.h"
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -121,27 +121,27 @@ void QAPInstance::readInstance(char *filename) {
 	fichero.close();
 }
 
-int MQKPInstance::getNumObjs() {
+int QAPInstance::getNumObjs() {
 	return _numObjs;
 }
 
-int MQKPInstance::getNumKnapsacks() {
+int QAPInstance::getNumKnapsacks() {
 	return _numKnapsacks;
 }
 
-double MQKPInstance::getWeight(int object) {
+double QAPInstance::getWeight(int object) {
 	return _weights[object];
 }
 
-double MQKPInstance::getCapacity(int knapsack){
+double QAPInstance::getCapacity(int knapsack){
 	return _capacities[knapsack];
 }
 
-double MQKPInstance::getProfit(int object){
+double QAPInstance::getProfit(int object){
 	return _profits[object][object];
 }
 
-double MQKPInstance::getProfit(int o1, int o2){
+double QAPInstance::getProfit(int o1, int o2){
 	return _profits[o1][o2];
 }
 

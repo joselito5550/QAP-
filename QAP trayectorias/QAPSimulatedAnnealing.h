@@ -1,24 +1,24 @@
 /*
- * MQKPSimulatedAnnealing.h
+ * QAPSimulatedAnnealing.h
  *
- * Fichero que define la clase MQKPSimulatedAnnealing. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPSimulatedAnnealing. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPSIMULATEDANNEALING_H_
-#define INCLUDE_MQKPSIMULATEDANNEALING_H_
+#ifndef INCLUDE_QAPSIMULATEDANNEALING_H_
+#define INCLUDE_QAPSIMULATEDANNEALING_H_
 
-#include "MQKPSolution.h"
-#include "MQKPInstance.h"
-#include "MQKPMetaheuristic.h"
-#include "MQKPStopCondition.h"
+#include "QAPSolution.h"
+#include "QAPInstance.h"
+#include "QAPMetaheuristic.h"
+#include "QAPStopCondition.h"
 #include <cstdlib>
 
 /**
- * Clase que implementa el Enfriamiento Simulado para el MQKP.
+ * Clase que implementa el Enfriamiento Simulado para el QAP.
  */
-class MQKPSimulatedAnnealing : public MQKPMetaheuristic {
+class QAPSimulatedAnnealing : public QAPMetaheuristic {
 
 protected:
 	/**
@@ -26,15 +26,15 @@ protected:
 	 * _T almacena la temperatura actual del sistema
 	 * _initialProb almacena la probabilidad inicial con la que se aceptan en media los cambios a peores soluciones
 	 * _annealingFactor almacena el factor con el que se enfría la temperatura
-	 * _solution Solución al MQKP sobre la que trabaja el Enfriamiento Simulado
+	 * _solution Solución al QAP sobre la que trabaja el Enfriamiento Simulado
 	 * _instance Instancia del problema que se está abordando
 	 */
 	double _T;
 	double _initialProb;
 	double _annealingFactor;
 	unsigned _itsPerAnnealing;
-	MQKPSolution *_solution;
-	MQKPInstance *_instance;
+	QAPSolution *_solution;
+	QAPInstance *_instance;
 
 	/**
 	 * vector de doubles donde almacena la calidad de la última solución aceptada
@@ -52,7 +52,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	MQKPSimulatedAnnealing(){
+	QAPSimulatedAnnealing(){
 		_T = 0;
 		_initialProb = 0;
 		_annealingFactor = 0;
@@ -64,7 +64,7 @@ public:
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPSimulatedAnnealing(){
+	virtual ~QAPSimulatedAnnealing(){
 
 		if (_bestSolution != NULL){
 			delete _bestSolution;
@@ -77,13 +77,13 @@ public:
 	 * Función que ejecuta la metaheurística hasta alcanzar la condición de parada
 	 * @param[in] stopCondition Condición de parada para la metaheurística
 	 */
-	virtual void run(MQKPStopCondition &stopCondition);
+	virtual void run(QAPStopCondition &stopCondition);
 
 	/**
 	 * Función que asigna la solución inicial para la metaheurística
 	 * @param[in] solution Solución inicial a partir de la cual aplicar el enfriamiento simulado
 	 */
-	void setSolution(MQKPSolution* solution);
+	void setSolution(QAPSolution* solution);
 
 	/**
 	 * Función que inicializa ciertos parámetros de la metaheurística, en particular, se calcula la temperatura inicial del sistema según la probabilidad con la que se desean aceptar los primeros cambios a peores soluciones
@@ -93,7 +93,7 @@ public:
 	 * @param[in] itersPerAnnealing Número de iteraciones entre dos enfriamientos de la temperatura
 	 * @param[in] instance Instancia del problema que se va a abordar
 	 */
-	void initialise(double initialProb, int numInitialEstimates, double annealingFactor, unsigned itsPerAnnealing, MQKPInstance &instance);
+	void initialise(double initialProb, int numInitialEstimates, double annealingFactor, unsigned itsPerAnnealing, QAPInstance &instance);
 
 	/**
 	 * Función que devuelve el vector con los resultados de las soluciones aceptadas, en cada paso, por la búsqueda local
@@ -106,4 +106,4 @@ public:
 };
 
 
-#endif /* INCLUDE_MQKPSIMULATEDANNEALING_H_ */
+#endif /* INCLUDE_QAPSIMULATEDANNEALING_H_ */

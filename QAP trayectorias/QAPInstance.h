@@ -1,27 +1,27 @@
 /**
- * MQKPInstance.h
+ * QAPInstance.h
  * 
- * Fichero que define la clase MQKPInstance. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPInstance. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef __MQKPINSTANCE_H__
-#define __MQKPINSTANCE_H__
+#ifndef __QAPINSTANCE_H__
+#define __QAPINSTANCE_H__
 
-#ifndef __MQKPSOLUTION_H__
-#include "MQKPSolution.h"
+#ifndef __QAPSOLUTION_H__
+#include "QAPSolution.h"
 #else
-class MQKPSolution;
+class QAPSolution;
 #endif
 
 #include <vector>
 using namespace std;
 
 /**
- * Clase que almacena la información de una instancia del problema MQKP
+ * Clase que almacena la información de una instancia del problema QAP
  */
-class MQKPInstance {
+class QAPInstance {
 protected:
 	/*Definir las variables miembro
 	 * _numKnapsacks Entero que indica el número de mochilas que se va a considerar. Este no se lee del fichero, sino que lo establecéis vosotros
@@ -39,12 +39,12 @@ public:
 	/**
 	 * Constructor por defecto
 	 */
-	MQKPInstance();
+	QAPInstance();
 
 	/**
 	 * Destructor
 	 */
-	~MQKPInstance();
+	~QAPInstance();
 
 	/**
 	 * Función de lectura de un fichero de entrada
