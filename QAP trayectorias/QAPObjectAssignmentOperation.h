@@ -18,8 +18,8 @@ class QAPObjectAssignmentOperation : public QAPChangeOperation {
 
 protected:
 	//las variables miembro de la clase según lo indicado en el guión de prácticas (_indexObj, _indexKnapsack, _deltaFitness)
-	int _indexObj;
-	int _indexKnapsack;
+	int _indexFacility1;
+	int _indexFacility2;
 	double _deltaFitness;
 
 public:
@@ -46,15 +46,15 @@ public:
 	 * @param[in] indexKnapsack El índice de la mochila donde se insertará el objeto
 	 * @param[in] deltaFitness La diferencia en fitness de aplicar dicha operación de asignación de un objeto a una mochila (siempre que la solución actual no se hubiese cambiado cuando se calculo dicha diferencia)
 	 */
-	void setValues(int indexObject, int indexKnapsack, double deltaFitness);
+	void setValues(int indexFacility1, int indexFacility2, double deltaFitness);
 
 	/**
 	 * Función que devuelve el objeto sujeto de la operación
 	 * @return índice del objeto sujeto de la operación
 	 */
-	unsigned getObj(){
-		return _indexObj;
-	}
+	//unsigned getObj(){		return _indexObj;	}
+	unsigned getIndexFacility1(){ return _indexFacility1;}
+	unsigned getIndexFacility2(){ return _indexFacility2;}
 
 	/**
 	 * Función que devuelve la diferencia en fitness de la operación,
@@ -68,9 +68,7 @@ public:
 	 * Función que devuelve la mochila objeto de la operación
 	 * @return mochila objeto de la operación
 	 */
-	unsigned getKnapsack(){
-		return _indexKnapsack;
-	}
+	//unsigned getKnapsack(){	return _indexKnapsack;}
 };
 
 #endif

@@ -49,8 +49,9 @@ void QAPSimulatedAnnealing::run(QAPStopCondition& stopCondition) {
 	}
 
 	_results.clear();
-	unsigned numObjs = _instance->getNumObjs();
-	unsigned numKnapsacks = _instance->getNumKnapsacks();
+	//unsigned numObjs = _instance->getNumObjs();
+	//unsigned numKnapsacks = _instance->getNumKnapsacks();
+	unsigned numFacilities = _instance -> getNumLocations();
 	unsigned numIterations = 0;
 
 	/**
@@ -63,12 +64,15 @@ void QAPSimulatedAnnealing::run(QAPStopCondition& stopCondition) {
 	 *   5. Si se llevan _itsPerAnnealing tras el último enfriamiento, entonces enfriar
 	 */
 	while (stopCondition.reached()==false){
-		int indexObject = rand()%numObjs;
-		int indexKnapsack = rand()%(numKnapsacks+1);
-		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance, *_solution, indexObject, indexKnapsack);
+		//int indexObject = rand()%numObjs;
+		//int indexKnapsack = rand()%(numKnapsacks+1);
+		int indexFacility1 = rand()%numFacilities;
+		int indexFacility2 = rand()%numFacilities;
+
+		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance, *_solution, indexFacility1, indexFacility2);
 
 		if (accept(deltaFitness)){
-			_solution->putObjectIn(indexObject, indexKnapsack);
+			_solution->putFacility(indexFacility1, indexFacility2);
 			_solution->setFitness(_solution->getFitness() + deltaFitness);
 			//DUDA Actualizar la mejor solucion hasta el momento esta ya hecho o es la linea de codigo comentada?
 			if (QAPEvaluator::compare(_solution->getFitness(), _bestSolution->getFitness()) > 0){
@@ -118,8 +122,9 @@ void QAPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 	_annealingFactor = annealingFactor;
 	_instance = &instance;
 	_itsPerAnnealing = itsPerAnnealing;
-	int numObjs = instance.getNumObjs();
-	int numKnapsacks = instance.getNumKnapsacks();
+	//int numObjs = instance.getNumObjs();
+	//int numKnapsacks = instance.getNumKnapsacks();
+	int numFacilities = _instance -> getNumLocations();
 	double averageFDiffs = 0.;
 
 	/**
@@ -131,9 +136,11 @@ void QAPSimulatedAnnealing::initialise(double initialProb, int numInitialEstimat
 		QAPSolution sol(instance);
 		QAPSolGenerator::genRandomSol(instance, sol);
 		sol.setFitness(QAPEvaluator::computeFitness(instance, sol));
-		int indexObject = rand() % numObjs;
-		int indexKnapsack = rand() % (numKnapsacks + 1);
-		double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, sol, indexObject, indexKnapsack);
+		//int indexObject = rand() % numObjs;
+		//int indexKnapsack = rand() % (numKnapsacks + 1);
+		int indexFacility1 = rand()%numFacilities;
+		int indexFacility2 = rand()%numFacilities;
+		double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, sol, indexFacility1, indexFacility2);
 		averageFDiffs += max(fabs(deltaFitness),10.); //He puesto una diferencia mínima de 10 para evitar cambios en el fitness demasiado pequeños (por ejemplo, cuando se modifica una mochila que no es la de la máxima violación (este método se podría mejorar)
 	}
 

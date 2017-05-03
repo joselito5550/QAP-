@@ -15,13 +15,17 @@ using namespace std;
 
 void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation) {
 
-	int bestObj = 0;
-	int bestKnapsack = 0;
+	//int bestObj = 0;
+	//int bestKnapsack = 0;
+	int bestIndexFacility1 = 0;
+	int bestIndexFacility2 = 0;
+
 	double bestDensity = 0;
 	double bestDeltaFitness = 0;
 	bool initialisedBestDensity = false;
-	unsigned numObjs = _instance->getNumObjs();
-	unsigned numKnapsacks = _instance->getNumKnapsacks();
+	//unsigned numObjs = _instance->getNumObjs();
+	//unsigned numKnapsacks = _instance->getNumKnapsacks();
+	unsigned numLocations = _instance -> getNumLocations();
 
 	/**
 	 * TODO
@@ -31,32 +35,34 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 	 *     Almacenar dicha asignación como la mejor en caso de que sea la de mayor densidad
 	 */
 
-	for (unsigned i = 0; i < numObjs; i++) {
+	for (unsigned i = 0; i < numLocations; i++) {
 
-		int indexObj = i;
+		int indexFacility1 = i;
 
-		if (_sol->whereIsObject(indexObj)==0) { //TODO comprobar que no está en ninguna mochila
+		
 
-			for (unsigned j = 1; j<=numKnapsacks; j++) { //TODO para todas las mochilas disponibles (saltarse la 0)
+			for (unsigned j = 0; j<numLocations; j++) { //TODO para todas las mochilas disponibles (saltarse la 0)
 
 				//TODO Calcular delta fitness, densidad como deltaFitness dividido por el peso, y actualizar la mejor opción
-				int indexKnapsack = j;
+				int indexFacility2 = j;
 
-				double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol, i,indexKnapsack);
-				double density = deltaFitness / (_instance->getWeight(indexObj));
+				double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol, indexFacility1,indexFacility2);
+				double density = deltaFitness / (_instance->getFlow(indexFacility1));
 
-				if (deltaFitness > bestDeltaFitness || initialisedBestDensity == false) {
+				if (density > bestDensity || initialisedBestDensity == false) {
 					initialisedBestDensity = true;
 					bestDensity = density;
-					bestObj = indexObj;
-					bestKnapsack = indexKnapsack;
+					//bestObj = indexObj;
+					//bestKnapsack = indexKnapsack;
+					bestIndexFacility1 = indexFacility1;
+					bestIndexFacility2 = indexFacility2;
 					bestDeltaFitness = deltaFitness;
 				}
 			}
-		}
+		
 	}
 
-	operation.setValues(bestObj, bestKnapsack, bestDeltaFitness);
+	operation.setValues(bestIndexFacility1, bestIndexFacility2, bestDeltaFitness);
 }
 
 void QAPIteratedGreedy::rebuild() {
@@ -71,7 +77,7 @@ void QAPIteratedGreedy::rebuild() {
 	 *  2. Almacenar el fitness de la solución en _result (para las gráficas)
 	 *  3. seleccionar una nueva operación
 	 */
-	while (operation.getDeltaFitness() > 0) {
+	while (operation.getDeltaFitness() < 0) {
 		//1. Aplicar la operación en _sol
 		operation.apply(*_sol);
 		//2. Almacenar el fitness de la solución en _result (para las gráficas)
@@ -88,14 +94,15 @@ void QAPIteratedGreedy::destroy() {
 	 * Recorrer los objetos y sacarlos de su mochila con probabilidad _alpha
 	 */
 
-	unsigned numObjs = _instance->getNumObjs();
+	//unsigned numObjs = _instance->getNumObjs();
+	unsigned numLocations = _instance->getNumLocations();
 
-	for (unsigned i = 0; i < numObjs; i++){
+	for (unsigned i = 0; i < numLocations; i++){
 
 		double randSample = ((double)(rand())) / RAND_MAX;
 
-		if ( randSample  >= _alpha){ //DUDA no se si al compilar dara fallo al obtener _alpha, seguramente si, getAlpha en .h
-			_sol->putObjectIn(i, 0);
+		if ( randSample  <= _alpha){ //DUDA no se si al compilar dara fallo al obtener _alpha, seguramente si, getAlpha en .h
+			_sol->putFacility(i, 0);
 		}
 	}
 
@@ -122,7 +129,7 @@ void QAPIteratedGreedy::run(QAPStopCondition& stopCondition) {
 	/** Crear la primera solución */
 	rebuild();
 
-	if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
+	if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) < 0)
 		_bestSolution->copy(*_sol);
 
 	/**

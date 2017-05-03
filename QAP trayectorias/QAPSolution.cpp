@@ -14,7 +14,7 @@ using namespace std;
 
 QAPSolution::QAPSolution(QAPInstance &instance) {
 	// inicializando las variables miembro. Inicialmente, todos los objetos estarán fuera de las mochilas ( = 0)
-	_numFacilities = instance.getNumObjs();
+	_numFacilities = instance.getNumLocations();
 	_fitness = 0;
 	_sol = new int[_numFacilities];
 	if (!_sol) {
@@ -34,12 +34,15 @@ QAPSolution::~QAPSolution() {
 	delete [] _sol;
 }
 
-void QAPSolution::putObjectIn(int facility, int location) {
+void QAPSolution::putFacility(int facility, int location){
+	//la función asigna un edificio a una localizacion, modificador.
 	_sol[facility] = location;
+
 }
 
-int QAPSolution::whereIsObject(int object) {
-	return _sol[facility];
+int QAPSolution::whereIsFacility(int facility){
+	//la función devuelve la localizacion en la que se encuentra insertado un edificio sol[i]
+	return(_sol[facility]);
 }
 
 double QAPSolution::getFitness() const {

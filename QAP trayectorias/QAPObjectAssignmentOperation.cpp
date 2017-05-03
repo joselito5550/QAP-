@@ -35,12 +35,11 @@ void QAPObjectAssignmentOperation::apply(QAPSolution& solution) {
 	solution.setFitness(suma_fitness);
 }
 
-void QAPObjectAssignmentOperation::setValues(int indexObject,
-		int indexKnapsack, double deltaFitness) {
+void QAPObjectAssignmentOperation::setValues(int indexFacility1, int indexFacility2, double deltaFitness) {
 	/*
 	 * Guarda los valores pasados como argumentos en las variables miembro
 	 */
-	_indexKnapsack = indexKnapsack;
-	_indexObj = indexObject;
+	_indexFacility1 = indexFacility1;
+	_indexFacility2 = indexFacility2;
 	_deltaFitness = deltaFitness;
 }

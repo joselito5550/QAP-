@@ -201,8 +201,8 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 				vector<double>*>;
 		results.push_back(resultsOnThisInstance);
 		char *instanceName = mainArgs[iInstance];
-		unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
-		instance.readInstance(instanceName, numKnapsacks);
+		//unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
+		instance.readInstance(instanceName);
 
 		//Ejecutar el enfriamientoSimulado
 		vector<double> *theseFirstResults = new vector<double>;
@@ -212,12 +212,12 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);
 
 		//Ejecutar la búsqueda tabú
-		theseFirstResults = new vector<double>;
+	/*	theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);
-
+T
 		//Ejecutar la búsqueda GRASP
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
@@ -230,7 +230,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 	}
 }
 

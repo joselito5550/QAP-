@@ -16,20 +16,24 @@ using namespace std;
 
 void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 
-	int bestObj = 0;
-	int bestKnapsack = 0;
+	//int bestObj = 0;
+	//int bestKnapsack = 0;
+	int bestIndexFacility1 = 0;
+	int bestIndexFacility2 = 0;
 	double bestDensity = 0;
 	double bestDeltaFitness = 0;
 	bool initialisedBestDensity = false;
-	unsigned numObjs = _instance->getNumObjs();
-	unsigned numKnapsacks = _instance->getNumKnapsacks();
+	//unsigned numObjs = _instance->getNumLocations();
+	//unsigned numKnapsacks = _instance->getNumLocations();
+	unsigned numLocations = _instance->getNumLocations();
 
 	/**
 	 * Calcular el número de intentos como el porcentaje _alpha por el número de posibilidades, que es el número de objetos por el número de mochilas.
 	 *
 	 * En este paso no se considerará que ya haya objetos asignados a alguna mochila, la mochila 0 que representa objetos sin asignar a ninguna mochila, ni que haya mochilas ya completamente llenas
 	 */
-	unsigned numTries = ((unsigned)(numObjs * numKnapsacks * _alpha));
+	//unsigned numTries = ((unsigned)(numObjs * numKnapsacks * _alpha));
+	unsigned numTries = ((unsigned) (numLocations * _alpha));
 
 	/**
 	 * TODO
@@ -37,25 +41,29 @@ void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 	 y quedarse con la alterantiva de mejor densidad
 	 */
 	for (unsigned i = 0; i < numTries; i++) {
-		int indexObj = rand()%(numObjs);
-		int indexKnapsack = 1+rand()%(numKnapsacks);
+		//int indexObj = rand()%(numObjs);
+		//int indexKnapsack = 1+rand()%(numKnapsacks);
+		int indexFacility1 = rand()%numLocations;
+		int indexFacility2 = rand()%numLocations;
 
-		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol,indexObj,indexKnapsack); //TODO obtener la mejora en fitness de dicha operación
-		double density = deltaFitness/(_instance->getWeight(indexObj)); //TODO calcular la densidad de dicha operación como la diferencia en fitness dividido por el peso del objeto
+		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol,indexFacility1,indexFacility2); //TODO obtener la mejora en fitness de dicha operación
+		//double density = deltaFitness/(_instance->getWeight(indexObj)); //TODO calcular la densidad de dicha operación como la diferencia en fitness dividido por el peso del objeto
+		double density = deltaFitness / (_instance->getFlow(indexFacility1));
 
 		//TODO actualizar si resulta ser la mejor
 		//DUDA sentencia if
-		if (deltaFitness > bestDeltaFitness || initialisedBestDensity == false) {
+		if (density > bestDensity || initialisedBestDensity == false) {
 			initialisedBestDensity = true;
 			bestDensity = density;
-			bestObj = indexObj;
-			bestKnapsack = indexKnapsack;
+			//bestObj = indexObj;
+			//bestKnapsack = indexKnapsack;
+			bestIndexFacility1 = indexFacility1;
+			bestIndexFacility2 = indexFacility2;
 			bestDeltaFitness = deltaFitness;
 		}
 	}
 
-	operation.setValues(bestObj, bestKnapsack,
-			bestDeltaFitness);
+	operation.setValues(bestIndexFacility1, bestIndexFacility2,	bestDeltaFitness);
 }
 
 void QAPGrasp::buildInitialSolution() {
@@ -64,11 +72,11 @@ void QAPGrasp::buildInitialSolution() {
 	 * TODO
 	 * Vaciar la solución _sol asignándole un fitness de 0 y poniendo todos los objetos en la mochila 0
 	 */
-	unsigned numObjs = _instance->getNumObjs();
-
+	//unsigned numObjs = _instance->getNumObjs();
+	unsigned numLocations = _instance->getNumLocations();
 	_sol->setFitness(0);
-	for (unsigned i = 0; i < numObjs; i++) {
-		_sol->putObjectIn(i,0);
+	for (unsigned i = 0; i < numLocations; i++) {
+		_sol->putFacility(i,0);
 	}
 
 	/** Seleccionar la primera operación */
@@ -82,7 +90,7 @@ void QAPGrasp::buildInitialSolution() {
 	 *  2. Almacenar el fitness de la solución en _result (para las gráficas)
 	 *  3. seleccionar una nueva operación
 	 */
-	while (operation.getDeltaFitness() > 0) {
+	while (operation.getDeltaFitness() < 0) {
 		operation.apply(*_sol);
 		_results.push_back(_sol->getFitness()); //DUDA
 		chooseOperation(operation);
@@ -126,7 +134,7 @@ void QAPGrasp::run(QAPStopCondition& stopCondition) {
 			_results.push_back(result);
 		}
 
-		if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) > 0)
+		if (QAPEvaluator::compare(_sol->getFitness(), _bestSolution->getFitness()) < 0)
 			_bestSolution->copy(*_sol);
 
 		stopCondition.notifyIteration();
