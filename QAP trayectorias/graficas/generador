@@ -1,0 +1,6 @@
+#!/bin/bash
+./gnuplotSA.sh
+./gnuplotIG.sh
+./gnuplotTS.sh
+./gnuplotGrasp.sh
+echo "Graficas generadas"
