@@ -45,8 +45,7 @@ void QAPTabuSearch::run(QAPStopCondition& stopCondition) {
 	}
 
 	_results.clear();
-	//unsigned numObjs = _instance->getNumObjs();
-	//unsigned numKnapsacks = _instance->getNumKnapsacks();
+
 	unsigned numLocations = _instance->getNumLocations();
 	unsigned numIterations = 0;
 
@@ -68,12 +67,15 @@ void QAPTabuSearch::run(QAPStopCondition& stopCondition) {
 		bool initialisedDeltaFitness = false;
 		QAPObjectAssignmentOperation bestOperation;
 
+
+
 		//Buscar la mejor operación no tabú
-		for (unsigned i = 0; i < numLocations; i++) {
+		for (unsigned i = 0; i < numLocations; i++)
+		{
 			unsigned indexFacility = perm[i];
 			
 			//Si el objeto no es tabú (utilizar _shortTermMem_aux.find)
-			if (_shortTermMem_aux.find(indexFacility)==_shortTermMem_aux.end()) {
+			if (_shortTermMem_aux.find(indexFacility) == _shortTermMem_aux.end()) {
 				//_shortTermMem_aux.find(indexObj); //DUDA 
 				//Probar todas las mochilas (incluida la 0) y elegir la mejor opción
 				for (unsigned j =0 ; j<numLocations; j++) {
@@ -86,7 +88,7 @@ void QAPTabuSearch::run(QAPStopCondition& stopCondition) {
 					double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance, *_solution, indexFacility, (int)j); //QAPEvaluator::computeDel....
 
 					//Si la diferencia de fitness es la mejor hasta el momento, apuntarla para aplicarla después
-					if (deltaFitness > bestDeltaFitness	|| initialisedDeltaFitness == false) {
+					if (deltaFitness < bestDeltaFitness	|| initialisedDeltaFitness == false) {
 						initialisedDeltaFitness = true;
 						bestDeltaFitness = deltaFitness;
 						bestOperation.setValues(indexFacility,j,deltaFitness);
@@ -108,15 +110,15 @@ void QAPTabuSearch::run(QAPStopCondition& stopCondition) {
 		_shortTermMem.push(bestOperation.getIndexFacility1());
 		_shortTermMem_aux.insert(bestOperation.getIndexFacility1());
 		//TODO Si hay demasiados elementos en la memoria, según la tenencia tabú, eliminar el más antiguo
-		if (_shortTermMem.size() > _tabuTennure) {
+		if (_shortTermMem.size() > _tabuTennure) 
+		{
 			unsigned value = _shortTermMem.front();
 			_shortTermMem.pop();
 			_shortTermMem_aux.erase(value);
 		}
 
 		//Actualizar la mejor solución
-		if (QAPEvaluator::compare(_solution->getFitness(),
-				_bestSolution->getFitness()) > 0) {
+		if (QAPEvaluator::compare(_solution->getFitness(), _bestSolution->getFitness()) > 0) {
 			_bestSolution->copy(*_solution);
 		}
 

@@ -23,8 +23,8 @@ bool QAPSimpleFirstImprovementNO::findOperation(QAPInstance &instance, QAPSoluti
 	}
 
 	//Crear una permutación de los índices de los objetos e inicializar algunas variables
-	vector<int> perm;
 	//int numObjs = instance.getNumObjs();
+	vector<int> perm;
 	int numLocations = instance.getNumLocations();
 	QAPInstance::randomPermutation(numLocations, perm);
 

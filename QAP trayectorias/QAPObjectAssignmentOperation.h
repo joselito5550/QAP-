@@ -18,8 +18,8 @@ class QAPObjectAssignmentOperation : public QAPChangeOperation {
 
 protected:
 	//las variables miembro de la clase según lo indicado en el guión de prácticas (_indexObj, _indexKnapsack, _deltaFitness)
-	int _indexFacility1;
-	int _indexFacility2;
+	int _indexFacility1 = 0;
+	int _indexFacility2 = 0;
 	double _deltaFitness;
 
 public:

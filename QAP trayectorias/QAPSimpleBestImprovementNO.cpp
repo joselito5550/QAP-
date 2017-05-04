@@ -51,7 +51,7 @@ bool QAPSimpleBestImprovementNO::findOperation(QAPInstance& instance,
 		for (int j = 0; j < numLocations; j++){
 			double deltaFitness = QAPEvaluator::computeDeltaFitness(instance, solution, perm[i], j);
 
-			if (deltaFitness > bestDeltaFitness || initialised == false){
+			if (deltaFitness < bestDeltaFitness || initialised == false){
 				initialised = true;
 				bestDeltaFitness = deltaFitness;
 				oaOperation->setValues(perm[i], j, deltaFitness);

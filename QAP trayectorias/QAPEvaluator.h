@@ -64,19 +64,25 @@ public:
 	 * @return Un valor positivo si el primer valor es mejor que el segundo, negativo en caso contrario, y 0 si son indistinguibles
 	 */
 	static double compare(double f1, double f2){
-		double aux = 0;
+		/*double aux = 0;
 		if(f1 > f2)
-		aux = 1;
-		else if(f1<f2)
+		//aux = 1;
 		aux = -1;
+		else if(f1<f2)
+		//aux = -1;
+		aux = 1;
 		else aux = 0;
-		return aux; //TODO corregir lo que hay que devolver
+		return aux; //TODO corregir lo que hay que devolver*/
+		return (f2-f1);
 	}
 
 	/**
 	 * Función que indica si el problema es de minimización o de maximización
 	 * @return Devuelve true si el problema es de minimización o false, si es de maximización
 	 */
+	/*static bool isToBeMinimised(){
+		return (compare(0,1) > 0);
+	}*/
 	static bool isToBeMinimised(){
 		return (compare(0,1) > 0);
 	}

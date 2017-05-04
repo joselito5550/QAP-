@@ -65,7 +65,8 @@ void runASAExperiment(vector<double> &currentResults,
 
 	for (auto aResult : resultsSA) {
 		currentResults.push_back(aResult);
-		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		//bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		bestSoFarResults.push_back(min(bestSoFarResults.back(), aResult));
 	}
 }
 
@@ -104,7 +105,8 @@ void runATSExperiment(vector<double> &currentResults,
 
 	for (auto aResult : resultsTS) {
 		currentResults.push_back(aResult);
-		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		//bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		bestSoFarResults.push_back(min(bestSoFarResults.back(), aResult));
 	}
 }
 
@@ -142,7 +144,8 @@ void runAGraspExperiment(vector<double> &currentResults,
 
 	for (auto aResult : resultsGRASP) {
 		currentResults.push_back(aResult);
-		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		//bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		bestSoFarResults.push_back(min(bestSoFarResults.back(), aResult));
 	}
 }
 
@@ -180,7 +183,8 @@ void runAIGExperiment(vector<double> &currentResults,
 
 	for (auto aResult : resultsIG) {
 		currentResults.push_back(aResult);
-		bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		//bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
+		bestSoFarResults.push_back(min(bestSoFarResults.back(), aResult));
 	}
 }
 /**
@@ -212,12 +216,12 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 		runASAExperiment(*theseFirstResults, *bestFirstResults, instance);
 
 		//Ejecutar la búsqueda tabú
-	/*	theseFirstResults = new vector<double>;
+		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
 		runATSExperiment(*theseFirstResults, *bestFirstResults, instance);
-T
+
 		//Ejecutar la búsqueda GRASP
 		theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
@@ -230,7 +234,7 @@ T
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
+		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);
 	}
 }
 

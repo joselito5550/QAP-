@@ -60,10 +60,11 @@ public:
 	int getNumLocations(){return _numLocations;};
 
 	double getFlow(int i, int j){return _flows[i][j];}
+	
+	double getFlow(int object){return _flows[object][object];}
 
 	double getDistance(int o1, int o2){return _distances[o1][o2];}
 
-	double getFlow(int object){return _flows[object][object];}
 
 	/**
 	 * Función que devuelve por cuanto se viola la capacidad de la mochila que está más cargada de más

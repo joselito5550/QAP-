@@ -72,9 +72,13 @@ void QAPSimulatedAnnealing::run(QAPStopCondition& stopCondition) {
 		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance, *_solution, indexFacility1, indexFacility2);
 
 		if (accept(deltaFitness)){
-			_solution->putFacility(indexFacility1, indexFacility2);
+			//_solution->putFacility(indexFacility1, indexFacility2);
+			//_solution->setFitness(_solution->getFitness() + deltaFitness);
+			int location1 = _solution->whereIsFacility(indexFacility1);
+			int location2 = _solution->whereIsFacility(indexFacility2);
+			_solution->putFacility(indexFacility1, location2);
+			_solution->putFacility(indexFacility2, location1);
 			_solution->setFitness(_solution->getFitness() + deltaFitness);
-			//DUDA Actualizar la mejor solucion hasta el momento esta ya hecho o es la linea de codigo comentada?
 			if (QAPEvaluator::compare(_solution->getFitness(), _bestSolution->getFitness()) > 0){
 				_bestSolution->copy(*_solution);
 				//setSolution(_solution);
@@ -83,7 +87,7 @@ void QAPSimulatedAnnealing::run(QAPStopCondition& stopCondition) {
 		numIterations++;
 		_results.push_back(_solution->getFitness());
 
-		if (numIterations % _itsPerAnnealing == 0){	//...
+		if (numIterations % _itsPerAnnealing){	//...
 			_T *= _annealingFactor;
 		}
 
@@ -104,16 +108,20 @@ bool QAPSimulatedAnnealing::accept(double deltaFitness) {
 	 *
 	 * (piensa qué ocurre cuando la diferencia de fitness es positiva o cuando es negativa)
 	 */
-	double auxDeltaFitness = exp(deltaFitness/_T);
+
+	//double auxDeltaFitness = exp(deltaFitness/_T);
+	double auxDeltaFitness = deltaFitness;
 
 	if (QAPEvaluator::isToBeMinimised()){
-		//auxDeltaFitness *= -1;	//DUDA ni idea de si es así
-		auxDeltaFitness = 1;
+		auxDeltaFitness *= -1;
 	}
 
-	//double prob = (double)(rand()%101)/100;
-	double randSample = (((double)rand()) / RAND_MAX);
-	return (randSample <= auxDeltaFitness ? true : false);  
+	
+	//double randSample = (((double)rand()) / RAND_MAX);
+	//return (randSample < auxDeltaFitness);  
+	double prob = exp(auxDeltaFitness / _T);
+	double randSample = ((double)rand() / RAND_MAX);
+	return (randSample < prob);
 	//DUDA entonces para que es el auxDeltaFitness? si nos fijamos solo en el numero aleatorio y la prob de aceptacion
 }
 

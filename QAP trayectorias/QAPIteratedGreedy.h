@@ -28,6 +28,10 @@ protected:
 	double _alpha;
 	QAPInstance *_instance;
 	QAPSolution *_sol;
+	vector <int> _destruidas;
+
+
+
 
 	/**
 	 * vector de doubles donde almacena la calidad de la última solución aceptada

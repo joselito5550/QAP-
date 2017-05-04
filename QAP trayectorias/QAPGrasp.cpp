@@ -9,6 +9,7 @@
 #include "QAPGrasp.h"
 #include <vector>
 #include "QAPSimpleFirstImprovementNO.h"
+#include "QAPSolGenerator.h"
 #include "QAPLocalSearch.h"
 #include <iostream>
 
@@ -16,15 +17,12 @@ using namespace std;
 
 void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 
-	//int bestObj = 0;
-	//int bestKnapsack = 0;
+
 	int bestIndexFacility1 = 0;
 	int bestIndexFacility2 = 0;
 	double bestDensity = 0;
 	double bestDeltaFitness = 0;
 	bool initialisedBestDensity = false;
-	//unsigned numObjs = _instance->getNumLocations();
-	//unsigned numKnapsacks = _instance->getNumLocations();
 	unsigned numLocations = _instance->getNumLocations();
 
 	/**
@@ -41,18 +39,17 @@ void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 	 y quedarse con la alterantiva de mejor densidad
 	 */
 	for (unsigned i = 0; i < numTries; i++) {
-		//int indexObj = rand()%(numObjs);
-		//int indexKnapsack = 1+rand()%(numKnapsacks);
+
 		int indexFacility1 = rand()%numLocations;
 		int indexFacility2 = rand()%numLocations;
 
 		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol,indexFacility1,indexFacility2); //TODO obtener la mejora en fitness de dicha operación
-		//double density = deltaFitness/(_instance->getWeight(indexObj)); //TODO calcular la densidad de dicha operación como la diferencia en fitness dividido por el peso del objeto
-		double density = deltaFitness / (_instance->getFlow(indexFacility1));
+		double density = deltaFitness / (_instance->getDistance(indexFacility1, indexFacility2));
 
 		//TODO actualizar si resulta ser la mejor
 		//DUDA sentencia if
-		if (density > bestDensity || initialisedBestDensity == false) {
+		if (density > bestDensity || initialisedBestDensity == false) 
+		{
 			initialisedBestDensity = true;
 			bestDensity = density;
 			//bestObj = indexObj;
@@ -73,11 +70,14 @@ void QAPGrasp::buildInitialSolution() {
 	 * Vaciar la solución _sol asignándole un fitness de 0 y poniendo todos los objetos en la mochila 0
 	 */
 	//unsigned numObjs = _instance->getNumObjs();
-	unsigned numLocations = _instance->getNumLocations();
+	/*unsigned numLocations = _instance->getNumLocations();
 	_sol->setFitness(0);
+
 	for (unsigned i = 0; i < numLocations; i++) {
 		_sol->putFacility(i,0);
-	}
+	}*/
+	QAPSolGenerator::genRandomSol(*_instance, *_sol);
+	_sol -> setFitness(QAPEvaluator::computeFitness(*_instance, *_sol));
 
 	/** Seleccionar la primera operación */
 	QAPObjectAssignmentOperation operation;
