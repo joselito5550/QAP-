@@ -20,9 +20,8 @@ void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 
 	int bestIndexFacility1 = 0;
 	int bestIndexFacility2 = 0;
-	double bestDensity = 0;
 	double bestDeltaFitness = 0;
-	bool initialisedBestDensity = false;
+	bool initialisedBestDeltaFitness = false;
 	unsigned numLocations = _instance->getNumLocations();
 
 	/**
@@ -30,7 +29,6 @@ void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 	 *
 	 * En este paso no se considerará que ya haya objetos asignados a alguna mochila, la mochila 0 que representa objetos sin asignar a ninguna mochila, ni que haya mochilas ya completamente llenas
 	 */
-	//unsigned numTries = ((unsigned)(numObjs * numKnapsacks * _alpha));
 	unsigned numTries = ((unsigned) (numLocations * _alpha));
 
 	/**
@@ -44,16 +42,11 @@ void QAPGrasp::chooseOperation(QAPObjectAssignmentOperation& operation) {
 		int indexFacility2 = rand()%numLocations;
 
 		double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol,indexFacility1,indexFacility2); //TODO obtener la mejora en fitness de dicha operación
-		double density = deltaFitness / (_instance->getDistance(indexFacility1, indexFacility2));
 
 		//TODO actualizar si resulta ser la mejor
-		//DUDA sentencia if
-		if (density > bestDensity || initialisedBestDensity == false) 
+		if (deltaFitness < bestDeltaFitness || initialisedBestDeltaFitness == false) 
 		{
-			initialisedBestDensity = true;
-			bestDensity = density;
-			//bestObj = indexObj;
-			//bestKnapsack = indexKnapsack;
+			initialisedBestDeltaFitness = true;
 			bestIndexFacility1 = indexFacility1;
 			bestIndexFacility2 = indexFacility2;
 			bestDeltaFitness = deltaFitness;
