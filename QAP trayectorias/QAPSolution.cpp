@@ -21,9 +21,9 @@ QAPSolution::QAPSolution(QAPInstance &instance) {
 		cerr << "No se ha reservado memoria correctamente para _sol" << endl;
 		exit(-1);
 	}
-	int i;
-	for (i = 0; i < _numFacilities; i++) {
-		_sol[i] = 0;
+	//Vamos a inicializar a -1, nos sera util para Iterated Greedy
+	for (int i = 0; i < _numFacilities; i++) {
+		_sol[i] = -1;
 	}
 }
 

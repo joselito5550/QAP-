@@ -81,8 +81,10 @@ void QAPTabuSearch::run(QAPStopCondition& stopCondition) {
 				for (unsigned j =0 ; j<numLocations; j++) {
 
 					//Saltarse el cambio que no hace nada
-					if (_solution->whereIsFacility(indexFacility) == ((int)j))
+					if (indexFacility == j)
 						continue;
+
+					if (_shortTermMem_aux.find(j) == _shortTermMem_aux.end()) {
 
 					//Obtener la diferencia de fitness de aplicar dicha operación
 					double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance, *_solution, indexFacility, (int)j); //QAPEvaluator::computeDel....
@@ -93,6 +95,7 @@ void QAPTabuSearch::run(QAPStopCondition& stopCondition) {
 						bestDeltaFitness = deltaFitness;
 						bestOperation.setValues(indexFacility,j,deltaFitness);
 					}
+				}
 				}
 			}
 		}

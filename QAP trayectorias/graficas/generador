@@ -3,4 +3,5 @@
 ./gnuplotIG.sh
 ./gnuplotTS.sh
 ./gnuplotGrasp.sh
+./gnuplot4graficas.sh
 echo "Graficas generadas"

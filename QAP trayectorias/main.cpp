@@ -49,8 +49,7 @@ void runASAExperiment(vector<double> &currentResults,
 
 	//Generar solución aleatoria
 	QAPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = QAPEvaluator::computeFitness(instance,
-			initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
 	currentResults.push_back(currentFitness);
@@ -84,7 +83,7 @@ void runATSExperiment(vector<double> &currentResults,
 	QAPTabuSearch ts;
 	QAPStopCondition stopCond;
 	QAPEvaluator::resetNumEvaluations();
-	ts.initialise(&instance, ((unsigned)(instance.getNumLocations() / 2.5)));
+	ts.initialise(&instance, ((unsigned)(instance.getNumLocations() / 1.5)));
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria
@@ -291,7 +290,7 @@ int main(int argc, char **argv) {
 	//////////////////////////
 	unsigned int numInstances = (argc - 1) / 2;
 	vector<vector<vector<double>*>*> allTheResults;
-	srand(seeds[0]);
+	srand(seeds[1]);
 	//En la matriz allTheResults se almacenarán todos los valores de fitness generados
 	//Es tridimensional
 	//El primer índice recorre las instancias de los problemas que se han abordado

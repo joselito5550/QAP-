@@ -11,10 +11,11 @@
 
 #ifndef __QAPINSTANCE_H__
 #include "QAPInstance.h"
+
 #else
 class QAPInstance;
 #endif
-
+#include <iostream>
 /**
  * Clase que representa una solución al problema
  *
@@ -76,6 +77,14 @@ public:
 	 * @param[in] solution La solución de donde copiar la información
 	 */
 	void copy(QAPSolution &solution);
+
+
+	void imprimeSolucion(){
+		for(int i=0; i<_numFacilities; i++){
+			std::cout << _sol[i] << " ";
+		}
+		std::cout << std::endl;
+	};
 };
 
 #endif
