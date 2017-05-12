@@ -73,6 +73,7 @@ public:
 		aux = 1;
 		else aux = 0;
 		return aux; //TODO corregir lo que hay que devolver*/
+		//Al ser minimización devolvemos f2-f1, para que las gráficas vayan decreciendo.
 		return (f2-f1);
 	}
 
@@ -80,9 +81,7 @@ public:
 	 * Función que indica si el problema es de minimización o de maximización
 	 * @return Devuelve true si el problema es de minimización o false, si es de maximización
 	 */
-	/*static bool isToBeMinimised(){
-		return (compare(0,1) > 0);
-	}*/
+
 	static bool isToBeMinimised(){
 		return (compare(0,1) > 0);
 	}

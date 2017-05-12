@@ -9,6 +9,9 @@
 #include "QAPSolGenerator.h"
 #include "QAPInstance.h"
 #include "QAPSolution.h"
+//QUitar despues
+#include <iostream>
+using namespace std;
 #include <stdlib.h>
 
 void QAPSolGenerator::genRandomSol(QAPInstance &instance, QAPSolution &solution){
@@ -22,6 +25,7 @@ void QAPSolGenerator::genRandomSol(QAPInstance &instance, QAPSolution &solution)
 	{
 		solution.putFacility(i,perm[i]);
 	}
+	
 
 }
 

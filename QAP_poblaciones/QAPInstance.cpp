@@ -12,6 +12,8 @@
 #include <fstream>
 #include <cstdlib>
 
+#include <limits> 
+
 using namespace std;
 
 QAPInstance::QAPInstance() {
@@ -52,12 +54,16 @@ double QAPInstance::getSumCost(QAPSolution &solution) {
 	{
 		for(int j=0; j < _numFacilities; j++)
 		{	
-			//Si un edificio impar se pone en una localizacion impar se penaliza (*0.1)
-			if(i%2!=0 && j%2!=0)
-				cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j] * 1.10;
-			else	
-				cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j];
-		}	
+			//Al inicializarse a -1 los edificios no debemos evaluar -1 porque daría error de desborde.
+			if(solution.whereIsFacility(i) != -1)
+			{
+				//Si un edificio impar se pone en una localizacion impar se penaliza (*0.1)
+				if(i%2!=0 && j%2!=0)
+					cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j] * 1.10;
+				else	
+					cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j];
+			} 
+		}
 
 	}
 
@@ -130,7 +136,7 @@ void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 	 * 3. Recórrelo intercambiando cada elemento con otro escogido de forma aleatoria.
 	 */
 	int numero;
-	srand(time(NULL));
+	//srand(time(NULL));
 	perm.clear();
 
 	for (int i=0; i<size; i++)
