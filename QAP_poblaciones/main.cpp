@@ -14,13 +14,13 @@
 #define MAX_SECONS_PER_RUN 5
 #define MAX_SOLUTIONS_PER_RUN 100000
 
-#include "MQKPEvaluator.h"
-#include "MQKPInstance.h"
-#include "MQKPSolGenerator.h"
-#include "MQKPSolution.h"
-#include "MQKPGeneticAlgorithm.h"
-#include "MQKPAntColonyOpt.h"
-#include "MQKPStopCondition.h"
+#include "QAPEvaluator.h"
+#include "QAPInstance.h"
+#include "QAPSolGenerator.h"
+#include "QAPSolution.h"
+#include "QAPGeneticAlgorithm.h"
+#include "QAPAntColonyOpt.h"
+#include "QAPStopCondition.h"
 #include "Timer.h"
 
 #include <iostream>
@@ -42,12 +42,12 @@ extern unsigned int seeds[];
 void runAGAExperiment(vector<double> &currentResults,
 		vector<double> &bestSoFarResults, vector<double> &bestPerIterations,
 		vector<double> &popMean, vector<double> &offMean,
-		MQKPInstance &instance) {
+		QAPInstance &instance) {
 
 	//Inicialización
-	MQKPGeneticAlgorithm ga;
-	MQKPStopCondition stopCond;
-	MQKPEvaluator::resetNumEvaluations();
+	QAPGeneticAlgorithm ga;
+	QAPStopCondition stopCond;
+	QAPEvaluator::resetNumEvaluations();
 	ga.initialise(60, instance);
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
@@ -81,12 +81,12 @@ void runAGAExperiment(vector<double> &currentResults,
  */
 void runAnACOExperiment(vector<double> &currentResults,
 		vector<double> &bestSoFarResults, vector<double> &bestPerIterations,
-		vector<double> &antsMean, MQKPInstance &instance) {
+		vector<double> &antsMean, QAPInstance &instance) {
 
 	//Inicialización
-	MQKPAntColonyOpt aco;
-	MQKPStopCondition stopCond;
-	MQKPEvaluator::resetNumEvaluations();
+	QAPAntColonyOpt aco;
+	QAPStopCondition stopCond;
+	QAPEvaluator::resetNumEvaluations();
 	aco.initialise(5, 0.1, 1, 0.5, 0.1, 0.1, 20, instance);
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
@@ -122,7 +122,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 	for (unsigned int iInstance = 1; iInstance < numMainArgs; iInstance += 2) {
 
 		//Leer la instancia y crear la estructuras de datos necesarias para guardar los resultados
-		MQKPInstance instance;
+		QAPInstance instance;
 		vector<vector<double>*>* resultsOnThisInstance = new vector<
 				vector<double>*>;
 		results.push_back(resultsOnThisInstance);

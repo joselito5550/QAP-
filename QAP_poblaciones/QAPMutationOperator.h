@@ -1,24 +1,24 @@
 /*
- * MQKPMutationOperator.h
+ * QAPMutationOperator.h
  *
- * Fichero que define la clase MQKPMutationOperator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPMutationOperator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPMUTATIONOPERATOR_H_
-#define INCLUDE_MQKPMUTATIONOPERATOR_H_
+#ifndef INCLUDE_QAPMUTATIONOPERATOR_H_
+#define INCLUDE_QAPMUTATIONOPERATOR_H_
 
-#include "MQKPSolution.h"
+#include "QAPSolution.h"
 #include <vector>
 #include <cstdlib>
 
 using namespace std;
 
 /**
- * Clase que define un operador de mutación para el MQKP. Se basa en recorrer todos los genes de la solución y cambiarlos por un valor aleatorio según una probabilidad
+ * Clase que define un operador de mutación para el QAP. Se basa en recorrer todos los genes de la solución y cambiarlos por un valor aleatorio según una probabilidad
  */
-class MQKPMutationOperator{
+class QAPMutationOperator{
 
 protected:
 	/**
@@ -36,7 +36,7 @@ protected:
 	 * @param[in,out] sol Solución a mutar
 	 */
 	void mutate(Solution* sol){
-		MQKPSolution *s = (MQKPSolution*) sol;
+		QAPSolution *s = (QAPSolution*) sol;
 
 		//TODO Recorrer los objetos y, según la probabilidad de mutación,
 		//asignarlos a una mochila aleatoria (podrían modificarse 0, 1, o más de 1 gen)
@@ -62,7 +62,7 @@ public:
 	 * @param[in] mutProb Probabilidad de mutación
 	 * @param[in] instance Instancia del problema a abordar
 	 */
-	MQKPMutationOperator(double mutProb, MQKPInstance &instance){
+	QAPMutationOperator(double mutProb, QAPInstance &instance){
 		_mutProb = mutProb;
 		_numObjs = instance.getNumObjs();
 		_numKnapsakcs = instance.getNumKnapsacks();
@@ -82,4 +82,4 @@ public:
 
 
 
-#endif /* INCLUDE_MQKPMUTATIONOPERATOR_H_ */
+#endif /* INCLUDE_QAPMUTATIONOPERATOR_H_ */

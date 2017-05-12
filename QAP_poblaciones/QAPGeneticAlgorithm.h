@@ -1,19 +1,19 @@
 /*
- * MQKPGeneticAlgorithm.h
+ * QAPGeneticAlgorithm.h
  *
- * Fichero que define la clase MQKPGeneticAlgorithm. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPGeneticAlgorithm. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPGENETICALGORITHM_H_
-#define INCLUDE_MQKPGENETICALGORITHM_H_
+#ifndef INCLUDE_QAPGENETICALGORITHM_H_
+#define INCLUDE_QAPGENETICALGORITHM_H_
 
-#include "MQKPMetaheuristic.h"
-#include "MQKPSolution.h"
+#include "QAPMetaheuristic.h"
+#include "QAPSolution.h"
 #include "SelectionOperator.h"
-#include "MQKPCrossoverOperator.h"
-#include "MQKPMutationOperator.h"
+#include "QAPCrossoverOperator.h"
+#include "QAPMutationOperator.h"
 #include "TournamentSelector.h"
 #include <vector>
 #include <iostream>
@@ -21,9 +21,9 @@
 using namespace std;
 
 /**
- * Clase que implementa un Algoritmo Genético Generacional con Elitismo para el MQKP
+ * Clase que implementa un Algoritmo Genético Generacional con Elitismo para el QAP
  */
-class MQKPGeneticAlgorithm: public MQKPMetaheuristic {
+class QAPGeneticAlgorithm: public QAPMetaheuristic {
 protected:
 	/**
 	 * Variables miembro de la clase:
@@ -37,9 +37,9 @@ protected:
 	unsigned _popSize;
 	vector<Solution*> _population;
 	SelectionOperator *_selector = NULL;
-	MQKPCrossoverOperator *_crossoverOp = NULL;
-	MQKPMutationOperator *_mutOp = NULL;
-	MQKPInstance *_instance = NULL;
+	QAPCrossoverOperator *_crossoverOp = NULL;
+	QAPMutationOperator *_mutOp = NULL;
+	QAPInstance *_instance = NULL;
 
 	/**
 	 * vectores donde se almacenan los resultados
@@ -156,7 +156,7 @@ protected:
 		double fitness;
 
 		for (Solution *sol : set) {
-			MQKPSolution *s = (MQKPSolution*) sol;
+			QAPSolution *s = (QAPSolution*) sol;
 
 			/**
 			 * TODO
@@ -168,13 +168,13 @@ protected:
 
 				//Evaluar
 				
-				fitness=MQKPEvaluator::computeFitness(*_instance, *s);
+				fitness=QAPEvaluator::computeFitness(*_instance, *s);
 
 				_results.push_back(fitness);
 				s->setFitness(fitness);
 
 				//Actualizar la mejor solución
-				if (MQKPEvaluator::compare(fitness, _bestSolution->getFitness()) > 0){
+				if (QAPEvaluator::compare(fitness, _bestSolution->getFitness()) > 0){
 					_bestSolution->copy(*s);
 				}
 			}
@@ -204,13 +204,13 @@ protected:
 
 		double fitness;
 		for (unsigned i = 0; i < popSize; i++) {
-			MQKPSolution * solution = new MQKPSolution(*_instance);
-			MQKPSolGenerator::genRandomSol(*_instance, *solution);
+			QAPSolution * solution = new QAPSolution(*_instance);
+			QAPSolGenerator::genRandomSol(*_instance, *solution);
 
-			fitness=MQKPEvaluator::computeFitness(*_instance, *solution);
+			fitness=QAPEvaluator::computeFitness(*_instance, *solution);
 			solution->setFitness(fitness);
 
-			if (MQKPEvaluator::compare(fitness, _bestSolution->getFitness()) > 0)
+			if (QAPEvaluator::compare(fitness, _bestSolution->getFitness()) > 0)
 			{
 				_bestSolution->copy(*solution);
 			}
@@ -243,7 +243,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	MQKPGeneticAlgorithm() {
+	QAPGeneticAlgorithm() {
 		_popSize = 0;
 		_bestSolution = NULL;
 	}
@@ -251,7 +251,7 @@ public:
 	/**
 	 * Destructor
 	 */
-	virtual ~MQKPGeneticAlgorithm() {
+	virtual ~QAPGeneticAlgorithm() {
 
 		for (unsigned i = 0; i < _popSize; i++) {
 			delete (_population.back());
@@ -268,7 +268,7 @@ public:
 	 * Función que ejecuta el algoritmo genético
 	 * @param[in] stopCondition Objeto que define cuándo se llega a la condición de parada
 	 */
-	virtual void run(MQKPStopCondition &stopCondition) {
+	virtual void run(QAPStopCondition &stopCondition) {
 
 		/**
 		 * TODO
@@ -321,7 +321,7 @@ public:
 	 * @param[in] popSize Tamaño de la población
 	 * @param[in] instance Instancia del problema a abordar
 	 */
-	void initialise(unsigned popSize, MQKPInstance &instance) {
+	void initialise(unsigned popSize, QAPInstance &instance) {
 		_instance = &instance;
 
 		if (popSize <= 0) {
@@ -334,9 +334,9 @@ public:
 			_bestSolution = NULL;
 		}
 
-		_bestSolution = new MQKPSolution(*_instance);
-		MQKPSolGenerator::genRandomSol(*_instance, *_bestSolution);
-		double fitness = MQKPEvaluator::computeFitness(*_instance, *_bestSolution);
+		_bestSolution = new QAPSolution(*_instance);
+		QAPSolGenerator::genRandomSol(*_instance, *_bestSolution);
+		double fitness = QAPEvaluator::computeFitness(*_instance, *_bestSolution);
 		_bestSolution->setFitness(fitness);
 
 		_popSize = popSize;
@@ -346,11 +346,11 @@ public:
 		 * pero se podrían usar otros operadores simplemente cambiando el objeto.
 		 */
 		if (_crossoverOp == NULL) {
-			_crossoverOp = new MQKPCrossoverOperator(0.8, *_instance);
+			_crossoverOp = new QAPCrossoverOperator(0.8, *_instance);
 		}
 
 		if (_mutOp == NULL) {
-			_mutOp = new MQKPMutationOperator((0.25 / _instance->getNumObjs()),
+			_mutOp = new QAPMutationOperator((0.25 / _instance->getNumObjs()),
 					*_instance);
 		}
 
@@ -369,7 +369,7 @@ public:
 	/**
 	 * Función que asigna un nuevo operador de cruce
 	 */
-	void setCrossoverOp(MQKPCrossoverOperator* crossoverOp) {
+	void setCrossoverOp(QAPCrossoverOperator* crossoverOp) {
 
 		if (_crossoverOp != NULL)
 			delete _crossoverOp;
@@ -380,7 +380,7 @@ public:
 	/**
 	 * Función que asigna un nuevo operador de mutación
 	 */
-	void setMutOp(MQKPMutationOperator* mutOp) {
+	void setMutOp(QAPMutationOperator* mutOp) {
 
 		if (_mutOp != NULL)
 			delete _mutOp;
@@ -421,4 +421,4 @@ public:
 	}
 };
 
-#endif /* INCLUDE_MQKPGENETICALGORITHM_H_ */
+#endif /* INCLUDE_QAPGENETICALGORITHM_H_ */

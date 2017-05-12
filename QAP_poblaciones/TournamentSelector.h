@@ -1,7 +1,7 @@
 /*
  * TournamentSelector.h
  *
- * Fichero que define la clase MQKPTournamentSelector. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPTournamentSelector. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */

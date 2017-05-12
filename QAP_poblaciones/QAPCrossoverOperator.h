@@ -1,34 +1,34 @@
 /*
- * MQKPCrossoverOperator.h
+ * QAPCrossoverOperator.h
  *
- * Fichero que define la clase MQKPCrossoverOperator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPCrossoverOperator. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPCROSSOVEROPERATOR_H_
-#define INCLUDE_MQKPCROSSOVEROPERATOR_H_
+#ifndef INCLUDE_QAPCROSSOVEROPERATOR_H_
+#define INCLUDE_QAPCROSSOVEROPERATOR_H_
 
-#include "MQKPSolution.h"
+#include "QAPSolution.h"
 #include "Solution.h"
-#include "MQKPInstance.h"
+#include "QAPInstance.h"
 #include <vector>
 
 using namespace std;
 
 /**
- * Clase que implementa un operador de cruce uniforme para el problema MQKP. Su idea es la misma que la de un cruce uniforme para codificación entera
+ * Clase que implementa un operador de cruce uniforme para el problema QAP. Su idea es la misma que la de un cruce uniforme para codificación entera
  */
-class MQKPCrossoverOperator {
+class QAPCrossoverOperator {
 
 protected:
 	/**
 	 * Variables miembro de la clase:
-	 *  - _instance Instancia de problema abordada. Se utiliza únicamente para crear nuevos objetos MQKPSolution
+	 *  - _instance Instancia de problema abordada. Se utiliza únicamente para crear nuevos objetos QAPSolution
 	 *  - _numObjs almacena el número de objetos de la instancia abordada para reducir el número de consultas a la instancia
 	 *  - _crossProb probabilidad de cruce
 	 */
-	MQKPInstance *_instance;
+	QAPInstance *_instance;
 	unsigned _numObjs;
 	double _crossProb;
 
@@ -38,10 +38,10 @@ protected:
 	 * @param[in] s2 segundo padre
 	 * @return Nuevo objeto solución descendiente de haber cruzado s1 y s2. La solución se reserva dinámicamente en memoria. Es responsabilidad del invocador de gestionarla correctamente.
 	 */
-	MQKPSolution * cross(Solution *s1, Solution *s2) {
-		MQKPSolution * sol = new MQKPSolution(*_instance);
-		MQKPSolution * sol1 = (MQKPSolution *) s1;
-		MQKPSolution * sol2 = (MQKPSolution *) s2;
+	QAPSolution * cross(Solution *s1, Solution *s2) {
+		QAPSolution * sol = new QAPSolution(*_instance);
+		QAPSolution * sol1 = (QAPSolution *) s1;
+		QAPSolution * sol2 = (QAPSolution *) s2;
 
 		double randSample = (((double) rand()) / RAND_MAX);
 
@@ -80,7 +80,7 @@ public:
 	 * @param[in] crossProb Probabilidad de cruce
 	 * @param[in] instance Instancia del problema abordada
 	 */
-	MQKPCrossoverOperator(double crossProb, MQKPInstance &instance) {
+	QAPCrossoverOperator(double crossProb, QAPInstance &instance) {
 		_instance = &instance;
 		_numObjs = instance.getNumObjs();
 		_crossProb = crossProb;
@@ -100,11 +100,11 @@ public:
 		for (int i=0; i<numParents; i=i+2) {
 			if(i+1 < numParents )
 			{
-				MQKPSolution *sol = cross(parents[i],parents[i+1]);
+				QAPSolution *sol = cross(parents[i],parents[i+1]);
 				offspring.push_back(sol);
 			}
 		}
 	}
 };
 
-#endif /* INCLUDE_MQKPCROSSOVEROPERATOR_H_ */
+#endif /* INCLUDE_QAPCROSSOVEROPERATOR_H_ */

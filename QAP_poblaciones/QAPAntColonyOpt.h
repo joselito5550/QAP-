@@ -1,18 +1,18 @@
 /*
- * MQKPAntColonyOpt.h
+ * QAPAntColonyOpt.h
  *
- * Fichero que define la clase MQKPAntColonyOpt. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
+ * Fichero que define la clase QAPAntColonyOpt. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
  *
  * @author Carlos García cgarcia@uco.es
  */
 
-#ifndef INCLUDE_MQKPANTCOLONYOPT_H_
-#define INCLUDE_MQKPANTCOLONYOPT_H_
+#ifndef INCLUDE_QAPANTCOLONYOPT_H_
+#define INCLUDE_QAPANTCOLONYOPT_H_
 
-#include "MQKPMetaheuristic.h"
-#include "MQKPInstance.h"
-#include "MQKPSolution.h"
-#include "MQKPObjectAssignmentOperation.h"
+#include "QAPMetaheuristic.h"
+#include "QAPInstance.h"
+#include "QAPSolution.h"
+#include "QAPObjectAssignmentOperation.h"
 #include <vector>
 #include <unordered_set>
 #include <iostream>
@@ -21,15 +21,15 @@
 using namespace std;
 
 /**
- * Clase que implementa un sistema de colonias de  hormigas para el MQKP.
+ * Clase que implementa un sistema de colonias de  hormigas para el QAP.
  */
 
-class MQKPAntColonyOpt: public MQKPMetaheuristic {
+class QAPAntColonyOpt: public QAPMetaheuristic {
 
 	/**
-	 * Clase que define implementa internamente a una hormiga para el MQKP
+	 * Clase que define implementa internamente a una hormiga para el QAP
 	 */
-	class MQKPAnt {
+	class QAPAnt {
 	protected:
 
 		/**
@@ -42,8 +42,8 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 *  _objectsLeft Conjunto de objetos que no se han insertado aún en ninguna mochila. Esta variable permite acelerar el proceso de construcción de soluciones de la hormiga. Su objetivo es mayormente hacer el proceso más eficiente
 		 *  _candidateListSize Número de opciones a considerar para añadir una nueva componente a la solución. Esta variable permite acelerar el proceso de construcción de soluciones, al impedir que se examinen todas las opciones posibles.
 		 */
-		MQKPAntColonyOpt *_colony;
-		MQKPSolution *_sol;
+		QAPAntColonyOpt *_colony;
+		QAPSolution *_sol;
 		unordered_set<unsigned> _objectsLeft;
 		double _candidateListSize;
 
@@ -69,11 +69,11 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 * @param[out] significances Vector con los valores de relevancia de las alternativas creadas
 		 */
 		void createAlternatives(
-				vector<MQKPObjectAssignmentOperation*> &alternatives,
+				vector<QAPObjectAssignmentOperation*> &alternatives,
 				vector<double> &significances) {
 
 			//Obtener la información de la colonia
-			MQKPInstance *instance = _colony->_instance;
+			QAPInstance *instance = _colony->_instance;
 			double alpha = _colony->_alpha;
 			double beta = _colony->_beta;
 			vector<vector<double>*> &phMatrix = _colony->_phMatrix;
@@ -113,8 +113,8 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 					 * 2. Calcular su relevancia como la densidad del objeto^beta * cantidadPheromona[objeto][mochila]^alpha
 					 * 3. Incluir la operación en las alternatives y la relevancia en significances
 					 */
-					MQKPObjectAssignmentOperation *al =
-							new MQKPObjectAssignmentOperation();
+					QAPObjectAssignmentOperation *al =
+							new QAPObjectAssignmentOperation();
 							//DUDA entiendo por densidad del objeto como su peso... no?
 							//DUDA a la operacion habrá que asignarle los valores no?
 					al->setValues(indexObj,j,deltaFitness);
@@ -129,10 +129,10 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 * Función que devuelve la mejor alternativa de la hormiga para añadir una nueva componente a su solución, de entre un conjunto de alternativas aleatorias evaluadas.
 		 * @param[out] op alternativa seleccionada como la mejor para la hormiga
 		 */
-		void selectBestAlternative(MQKPObjectAssignmentOperation &op) {
+		void selectBestAlternative(QAPObjectAssignmentOperation &op) {
 
 			//Obtener la información de la colonia
-			MQKPInstance *instance = _colony->_instance;
+			QAPInstance *instance = _colony->_instance;
 			vector<vector<double>*> &phMatrix = _colony->_phMatrix;
 			double beta = _colony->_beta;
 			double alpha = _colony->_alpha;
@@ -188,7 +188,7 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 * Función que libera la memoria de las alternativas creadas por la hormiga para elegir una
 		 * @param[in,out] alt Vector con las alternativas a liberar de memoria
 		 */
-		void freeAlternatives(vector<MQKPObjectAssignmentOperation*> &alt) {
+		void freeAlternatives(vector<QAPObjectAssignmentOperation*> &alt) {
 
 			for (auto altOp : alt) {
 				delete altOp;
@@ -204,16 +204,16 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 * @param[in] candidateListSize Número de soluciones a evaluar en cada paso
 		 * @param[in] colony Puntero a la colonia a la que pertenece la hormiga
 		 */
-		MQKPAnt(unsigned candidateListSize, MQKPAntColonyOpt *colony) {
+		QAPAnt(unsigned candidateListSize, QAPAntColonyOpt *colony) {
 			_colony = colony;
-			_sol = new MQKPSolution(*(colony->_instance));
+			_sol = new QAPSolution(*(colony->_instance));
 			_candidateListSize = candidateListSize;
 		}
 
 		/**
 		 * Destructor
 		 */
-		~MQKPAnt() {
+		~QAPAnt() {
 			delete _sol;
 			_sol = NULL;
 		}
@@ -229,7 +229,7 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 			 * 2. Asignarle un fitness igual a cero
 			 */
 			//Para saber el numero de obj
-			MQKPInstance *instance = _colony->_instance;
+			QAPInstance *instance = _colony->_instance;
 			_objectsLeft.clear();
 			for(int i=0; i<instance->getNumObjs();i++){
 				_sol->putObjectIn(i,0);
@@ -242,7 +242,7 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 * Función que hace que la hormiga escoja una alternativa y la añada a su solución. También devuelve la opción escogida
 		 * @param[out] operation Operación de asignación de un objeto a una mochila elegida por la hormiga
 		 */
-		void chooseOperation(MQKPObjectAssignmentOperation &operation) {
+		void chooseOperation(QAPObjectAssignmentOperation &operation) {
 
 			//Decidir entre elegir la mejor altnerativa o una según probabilidades
 			double randSample = (((double) rand()) / RAND_MAX);
@@ -252,7 +252,7 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 			} else {
 
 				//Crear las alternativas
-				vector<MQKPObjectAssignmentOperation*> alternatives;
+				vector<QAPObjectAssignmentOperation*> alternatives;
 				vector<double> significances;
 				createAlternatives(alternatives, significances);
 
@@ -296,7 +296,7 @@ class MQKPAntColonyOpt: public MQKPMetaheuristic {
 		 * Función que devuelve la solución construída por la hormiga
 		 * @return Solución construída por la hormiga
 		 */
-		MQKPSolution & getSolution() {
+		QAPSolution & getSolution() {
 			return *_sol;
 		}
 	};
@@ -320,8 +320,8 @@ protected:
 	double _initTau;
 	double _evaporation;
 	vector<vector<double>*> _phMatrix;
-	vector<MQKPAnt*> _ants;
-	MQKPInstance *_instance;
+	vector<QAPAnt*> _ants;
+	QAPInstance *_instance;
 
 	/**
 	 * vectores donde se almacenan los resultados
@@ -337,7 +337,7 @@ protected:
 	 * Función que aplica la actualización local de feromona (cuando una hormiga anda, se lleva parte de pheromona; ver fórmula en diapositivas)
 	 * @param[in] op Opción que escogió la hormiga y donde se va a aplicar la actualización
 	 */
-	void localUpdate(MQKPObjectAssignmentOperation &op)
+	void localUpdate(QAPObjectAssignmentOperation &op)
 	{
 		_phMatrix.at(op.getObj())->at(op.getKnapsack())=(1-_evaporation)*_phMatrix.at(op.getObj())->at(op.getKnapsack())+_evaporation*_initTau;
 	}
@@ -373,8 +373,8 @@ protected:
 
 			//TODO Mover cada hormiga
 			for (auto iAnt : movingAnts) {
-				MQKPAnt *ant = _ants[iAnt];
-				MQKPObjectAssignmentOperation op;
+				QAPAnt *ant = _ants[iAnt];
+				QAPObjectAssignmentOperation op;
 				op.setValues(-1, -1, 0);
 				ant->chooseOperation(op);
 				//TODO Si la hormiga se ha movido, entonces aplicar la actualización local de feromona. Si no, apuntarla en stoppedAnts para eliminarla después de movingAnts
@@ -394,10 +394,10 @@ protected:
 		double bestFitness = _bestSolution->getFitness();
 
 		for (auto ant : _ants) {
-			MQKPSolution &sol = ant->getSolution();
+			QAPSolution &sol = ant->getSolution();
 			double currentFitness = ant->getSolution().getFitness();
 
-			if (MQKPEvaluator::compare(currentFitness, bestFitness) > 0) {
+			if (QAPEvaluator::compare(currentFitness, bestFitness) > 0) {
 				_bestSolution->copy(sol);
 				bestFitness = currentFitness;
 			}
@@ -409,19 +409,19 @@ protected:
 	 */
 	void saveStatistics() {
 
-		MQKPSolution &firstSol = _ants.at(0)->getSolution();
+		QAPSolution &firstSol = _ants.at(0)->getSolution();
 		double bestFitness = firstSol.getFitness();
 		double meanFitness = 0.;
 		unsigned numAnts = (unsigned) _ants.size();
 		double inverseNumAnts = 1. / numAnts;
 
 		for (auto ant : _ants) {
-			MQKPSolution &sol = ant->getSolution();
+			QAPSolution &sol = ant->getSolution();
 			double currentFitness = sol.getFitness();
 			_results.push_back(currentFitness);
 			meanFitness += (currentFitness * inverseNumAnts);
 
-			if (MQKPEvaluator::compare(currentFitness, bestFitness) > 0) {
+			if (QAPEvaluator::compare(currentFitness, bestFitness) > 0) {
 				bestFitness = currentFitness;
 			}
 		}
@@ -453,7 +453,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	MQKPAntColonyOpt() {
+	QAPAntColonyOpt() {
 		_bestSolution = NULL;
 		_q0 = 0.8;
 		_alpha = 1;
@@ -466,7 +466,7 @@ public:
 	/**
 	 * Destructor
 	 */
-	~MQKPAntColonyOpt() {
+	~QAPAntColonyOpt() {
 
 		if (_bestSolution != NULL) {
 			delete _bestSolution;
@@ -499,7 +499,7 @@ public:
 	 */
 	void initialise(unsigned numAnts, double q0, double alpha, double beta,
 			double initTau, double evaporation, unsigned candidateListSize,
-			MQKPInstance &instance) {
+			QAPInstance &instance) {
 		_instance = &instance;
 		_q0 = q0;
 		_alpha = alpha;
@@ -519,9 +519,9 @@ public:
 
 
 		//Generación de una solución inicial para _bestSolution
-		_bestSolution = new MQKPSolution(*_instance);
-		MQKPSolGenerator::genRandomSol(*_instance, *_bestSolution);
-		double fitness = MQKPEvaluator::computeFitness(*_instance,
+		_bestSolution = new QAPSolution(*_instance);
+		QAPSolGenerator::genRandomSol(*_instance, *_bestSolution);
+		double fitness = QAPEvaluator::computeFitness(*_instance,
 				*_bestSolution);
 		_bestSolution->setFitness(fitness);
 
@@ -529,7 +529,7 @@ public:
 		//TODO Creación de las hormigas
 		for (unsigned i = 0; i < numAnts; i++) {
 			//DUDA no se si este this, es así, hay que pasarle la colonia al constructor
-			MQKPAnt *ant = new MQKPAnt(candidateListSize, this);
+			QAPAnt *ant = new QAPAnt(candidateListSize, this);
 			_ants.push_back(ant);
 		}
 
@@ -552,7 +552,7 @@ public:
 	 * Función que ejecuta el algoritmo ACO
 	 * @param[in] stopCondition Objeto que define cuándo se llega a la condición de parada
 	 */
-	virtual void run(MQKPStopCondition &stopCondition) {
+	virtual void run(QAPStopCondition &stopCondition) {
 
 		if (_instance == NULL) {
 			cerr << "The ACO algorithm has not been initialised" << endl;
@@ -591,4 +591,4 @@ public:
 	}
 };
 
-#endif /* INCLUDE_MQKPANTCOLONYOPT_H_ */
+#endif /* INCLUDE_QAPANTCOLONYOPT_H_ */
