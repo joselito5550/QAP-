@@ -9,6 +9,7 @@
 #include "QAPIteratedGreedy.h"
 #include "QAPObjectAssignmentOperation.h"
 #include "QAPSolution.h"
+#include "QAPSolGenerator.h"
 #include <iostream>
 
 using namespace std;
@@ -19,11 +20,13 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 	int bestIndexFacility1 = 0;
 	int bestIndexFacility2 = 0;
 
-	double bestDeltaFitness = 111111110;
+	double bestDeltaFitness = 0;
 
 	bool initialisedBestDeltaFitness = false;
 
 	unsigned numLocations = _instance -> getNumLocations();
+
+	_sol->imprimeSolucion();
 
 	/**
 	 * TODO
@@ -54,14 +57,11 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 	}*/
 	
 
-	for (unsigned i = 0; i < numLocations; i++) {
+	/*for (unsigned i = 0; i < numLocations; i++) {
 		if(_sol->whereIsFacility(i) == -1){
 		int indexFacility1 = i;		
 
-			for (unsigned j = 0; j < numLocations; j++) { //TODO para todas las mochilas disponibles (saltarse la 0)
-
-				
-					
+			for (unsigned j = 0; j < numLocations; j++) { //TODO para todas las mochilas disponibles (saltarse la 0)					
 				
 
 				//TODO Calcular delta fitness, densidad como deltaFitness dividido por el peso, y actualizar la mejor opción
@@ -70,7 +70,6 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 				double deltaFitness = QAPEvaluator::computeDeltaFitness(*_instance,*_sol, i,j);
 
 				if (deltaFitness < bestDeltaFitness || initialisedBestDeltaFitness == false) {
-					_sol->putFacility(i, j);
 					initialisedBestDeltaFitness = true;
 					bestDeltaFitness = deltaFitness;
 					bestIndexFacility1 = indexFacility1;
@@ -80,7 +79,9 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 		
 	}
 }	
-	operation.setValues(bestIndexFacility1, bestIndexFacility2, bestDeltaFitness);
+	operation.setValues(bestIndexFacility1, bestIndexFacility2, bestDeltaFitness);*/
+
+
 }
 
 void QAPIteratedGreedy::rebuild() {
@@ -120,7 +121,7 @@ void QAPIteratedGreedy::destroy() {
 
 		if ( randSample  <= _alpha){
 			//_sol->putFacility(i, 0);
-			//_destruidas.push_back(i);
+			_destruidas.push_back(i);
 			_sol->putFacility(i, -1);
 		}
 	}
@@ -131,7 +132,9 @@ void QAPIteratedGreedy::destroy() {
 }
 
 void QAPIteratedGreedy::initialise(double alpha, QAPInstance& instance) {
-	_sol = new QAPSolution(instance);
+	//_sol = new QAPSolution(instance);
+		QAPSolution sol(instance);
+		QAPSolGenerator::genRandomSol(instance, sol);
 	_bestSolution = new QAPSolution(instance);
 	_bestSolution->copy(*_sol);
 	_instance = &instance;
@@ -178,5 +181,4 @@ void QAPIteratedGreedy::run(QAPStopCondition& stopCondition) {
 		stopCondition.notifyIteration();
 	}
 }
-
 

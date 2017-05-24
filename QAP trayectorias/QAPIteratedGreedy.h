@@ -103,6 +103,13 @@ public:
 	vector<double>& getResults() {
 		return _results;
 	}
+
+	void imprimeDestruidas(){
+		for(unsigned i=0; i<_destruidas.size(); i++){
+			std::cout << _destruidas[i] << " ";
+		}
+		std::cout << std::endl;
+	}
 };
 
 

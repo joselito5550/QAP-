@@ -128,8 +128,7 @@ void runAGraspExperiment(vector<double> &currentResults,
 
 	//Generar solución aleatoria para inicialiar la mejor solución
 	QAPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = QAPEvaluator::computeFitness(instance,
-			initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,	initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
 	currentResults.push_back(currentFitness);
@@ -154,8 +153,7 @@ void runAGraspExperiment(vector<double> &currentResults,
  * @param[out] bestSoFarResults vector donde se almacenarán los mejores valores fitness generados hasta el momento
  * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
  */
-void runAIGExperiment(vector<double> &currentResults,
-		vector<double> &bestSoFarResults, QAPInstance &instance) {
+void runAIGExperiment(vector<double> &currentResults,vector<double> &bestSoFarResults, QAPInstance &instance) {
 
 	//Inicialización
 	QAPSolution initialSolution(instance);
@@ -163,12 +161,13 @@ void runAIGExperiment(vector<double> &currentResults,
 	QAPStopCondition stopCond;
 	QAPEvaluator::resetNumEvaluations();
 	ig.initialise(0.25, instance);
+		QAPSolGenerator::genRandomSol(instance, initialSolution);
+
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Generar solución aleatoria para inicialiar la mejor solución
 	QAPSolGenerator::genRandomSol(instance, initialSolution);
-	double currentFitness = QAPEvaluator::computeFitness(instance,
-			initialSolution);
+	double currentFitness = QAPEvaluator::computeFitness(instance,	initialSolution);
 	initialSolution.setFitness(currentFitness);
 	double bestFitness = currentFitness;
 	currentResults.push_back(currentFitness);
@@ -182,7 +181,6 @@ void runAIGExperiment(vector<double> &currentResults,
 
 	for (auto aResult : resultsIG) {
 		currentResults.push_back(aResult);
-		//bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
 		bestSoFarResults.push_back(min(bestSoFarResults.back(), aResult));
 	}
 }
