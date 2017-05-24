@@ -20,16 +20,20 @@
  * Sobre la representación de soluciones:
  * La representación de las soluciones será un vector de número enteros: de 1 a M para objetos que están en alguna de las M mochilas y 0 para objetos que no están en ninguna mochilas
  */
+struct Randomhelp{
+    int num;
+    bool used = false;
+};
 class QAPSolGenerator {
 
 public:
 
-	/**
-	 * Función que genera una solución aleatoria para el problema de las múltiples mochilas cuadráticas
-	 * @param[in] instance Referencia a un objeto con la información de la instancia del problema QAP
-	 * @param[out] solution Referencia a un objeto que representa una solución al problema. IMPORTANTE: debe estar correctamente inicializado. En particular, su vector interno debe haber sido reservado previamente.
-	 */
-	static void genRandomSol(QAPInstance &instance, QAPSolution &solution);
+    /**
+     * Función que genera una solución aleatoria para el problema de las múltiples mochilas cuadráticas
+     * @param[in] instance Referencia a un objeto con la información de la instancia del problema QAP
+     * @param[out] solution Referencia a un objeto que representa una solución al problema. IMPORTANTE: debe estar correctamente inicializado. En particular, su vector interno debe haber sido reservado previamente.
+     */
+    static void genRandomSol(QAPInstance &instance, QAPSolution &solution);
 };
 
 #endif

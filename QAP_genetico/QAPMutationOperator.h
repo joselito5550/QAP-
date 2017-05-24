@@ -57,8 +57,8 @@ public:
 	 */
 	QAPMutationOperator(double mutProb, QAPInstance &instance){
 		_mutProb = mutProb;
-		_numLocalizaciones = instance.getNumLoc();
-		_numInstalaciones = instance.getNumIns();
+		_numLocalizaciones = instance.getNumLocations();
+		_numInstalaciones = instance.getNumLocations();
 	}
 
 	/**

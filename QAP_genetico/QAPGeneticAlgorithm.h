@@ -348,7 +348,7 @@ public:
 		}
 
 		if (_mutOp == NULL) {
-			_mutOp = new QAPMutationOperator((0.25 / _instance->getNumLoc()),
+			_mutOp = new QAPMutationOperator((0.25 / _instance->getNumLocations()),
 					*_instance);
 		}
 

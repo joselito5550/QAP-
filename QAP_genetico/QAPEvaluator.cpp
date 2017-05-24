@@ -16,22 +16,36 @@ double QAPEvaluator::computeFitness(QAPInstance &instance, QAPSolution &solution
 
 	double fitness = 0;
 
-	fitness=instance.getSumCoste(solution);
-	 
+	/*
+	 *  Calcular el fitness de la solución de la siguiente forma
+	 *   1. Obtener la máxima violación de las capacidades de las mochilas invocando la función de arriba
+	 *   2. Si es mayor a 0, entonces devolvemos dicha mayor violación multiplicada por -1.
+	 *   3. Si no, devolvemos la suma de los beneficios individuales y cuadráticos invocando a la función de arriba
+	 */
+	 // if(instance.getMaxCapacityViolation(solution) > 0)
+	 // {
+	 // 	fitness = instance.getMaxCapacityViolation(solution) * (-1);
+	 // }
+	 // else
+	 // {
+	 // 	fitness = instance.getSumProfits(solution);
+	 // }
+
+	 fitness = instance.getSumCost(solution);
 	 _numEvaluations++;
-	
 	return fitness;
 }
 
-double QAPEvaluator::computeDeltaFitness(QAPInstance& instance, QAPSolution& solution, int loc1, int loc2) {
 
-	double fitness = 0;
-
-	fitness = instance.getDeltaSumCoste(solution,loc1,loc2);
+double QAPEvaluator::computeDeltaFitness(QAPInstance& instance,	QAPSolution& solution, int indexFacility1, int indexFacility2) {
 
 	_numEvaluations++;
 
+	
+	double fitness = 0;
+	fitness = instance.getDeltaSumCost(solution, indexFacility1, indexFacility2);
 	return fitness;
+
 }
 
 void QAPEvaluator::resetNumEvaluations() {

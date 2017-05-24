@@ -1,4 +1,4 @@
- /**
+/**
  * QAPSolution.h
  * 
  * Fichero que define la clase QAPSolution. Forma parte del código esqueleto para el problema de las múltiples mochilas cuadráticas, ofrecido para las prácticas de la asignatura Metaheurísticas del Grado de Ingeniería Informática de la Universidad de Córdoba
@@ -11,33 +11,30 @@
 
 #ifndef __QAPINSTANCE_H__
 #include "QAPInstance.h"
+
 #else
 class QAPInstance;
 #endif
+#include <iostream>
 
 #include "Solution.h"
-
 /**
  * Clase que representa una solución al problema
  *
  * Sobre la representación de soluciones:
  * La representación de las soluciones será un vector de número enteros: de 1 a M para objetos que están en alguna de las M mochilas y 0 para objetos que no están en ninguna mochilas
  */
-#include <vector>
-using namespace std;
-using std::vector;
-
-class QAPSolution : public Solution {
+class QAPSolution : public Solution{
 protected:
 	/* Definir las variables miembro
 	 * _sol Vector de enteros que será la representación interna de la solución al problema
-	 * _numLocalizaciones Entero donde se almacenará el número de localizaciones del problema
+	 * _numObjs Entero donde se almacenará el número de objetos del problema
 	 * _fitness valor double que almacena la calidad de la solución
 	 */
 	int * _sol;
-	int _numLocalizaciones;
+	int _numFacilities;
 	double _fitness;
-	bool _fitnessAssigned;
+		bool _fitnessAssigned;
 
 public:
 	/**
@@ -56,20 +53,14 @@ public:
 	 * @param[in] object Índice del objeto a insertar en la mochila indicada
 	 * @param[in] knapsack Índice de la mochila donde insertar el objeto
 	 */
-	void putInstalacion(int instalacion, int localizacion);
+	void putFacility(int facility, int location);
 
 	/**
 	 * Función que devuelve la mochila en la que está insertado un objeto
 	 * @param[in] object Índice del objeto consultado
 	 * @return Índice de la mochila en la que está insertado el objeto
 	 */
-	int whereIsInstalacion(int instalacion);
-
-	/**
-	 *Función añadida que nos dice qué instalación hay en una localización pasada como parámetro
-	 */
-
-	int whatIsInLocalizacion(int localizacion);
+	int whereIsFacility(int facility);
 
 	/**
 	 * Función que devuelve el fitness de la solución
@@ -90,21 +81,18 @@ public:
 	 */
 	void copy(Solution &solution);
 
-	/*
-	 * Función auxiliar para intercambiar dos instalaciones en el vector solución
-	*/
 	void intercambio(int &l1, int &l2);
-
-	inline void clear(){
-		for(int l = 0; l < _numLocalizaciones; l++)
-			putInstalacion(-1,l);
-	}
-
 	bool existeIns(int ins);
-
-	bool hasValidFitness(){
+		bool hasValidFitness(){
 		return _fitnessAssigned;
 	}
+
+	void imprimeSolucion(){
+		for(int i=0; i<_numFacilities; i++){
+			std::cout << _sol[i] << " ";
+		}
+		std::cout << std::endl;
+	};
 };
 
 #endif

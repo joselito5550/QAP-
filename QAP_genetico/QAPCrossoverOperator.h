@@ -54,17 +54,17 @@ protected:
 
 			//Rellenamos un 50% del hijo, a partir de 2 particiones del 25% del padre1, una al principio y otra al final esto solo lo leemos nosotros
 			for(int i=0;i<_numLocalizaciones/4;i++){
-				hijo->putInstalacion(sol1->whatIsInLocalizacion(i),i);
+				hijo->putFacility(i, sol1->whereIsFacility(i));
 			}
 			for(int i=_numLocalizaciones-1; i > (_numLocalizaciones- 1 - _numLocalizaciones/4);i--){
-				hijo->putInstalacion(sol1->whatIsInLocalizacion(i),i);
+				hijo->putFacility(i, sol1->whereIsFacility(i));
 			}
 
 			for(int i=0;i<_numLocalizaciones;i++){
-				aux=sol2->whatIsInLocalizacion(i);
+				aux=sol2->whereIsFacility(i);
 
 				if(!hijo->existeIns(aux)){
-					hijo->putInstalacion(sol1->whatIsInLocalizacion(i),iterador+_numLocalizaciones/4);
+					hijo->putFacility(iterador+_numLocalizaciones/4, aux);
 					iterador+=1;
 				}
 
@@ -87,7 +87,7 @@ public:
 	 */
 	QAPCrossoverOperator(double crossProb, QAPInstance &instance) {
 		_instance = &instance;
-		_numLocalizaciones = instance.getNumLoc();
+		_numLocalizaciones = instance.getNumLocations();
 		_crossProb = crossProb;
 	}
 

@@ -12,56 +12,64 @@
 #include <fstream>
 #include <cstdlib>
 
-//aleatorios:
-#include <ctime>
+#include <limits> 
 
 using namespace std;
 
 QAPInstance::QAPInstance() {
 	// inicializando las variables miembro
-	_localizaciones = 0;
-	_instalaciones = 0;
-	this->_distancias = NULL;
-	this->_flujos = NULL;
+
+	_numLocations = 0;
+	_numFacilities = 0;
+	this->_distances = NULL;
+	this->_flows = NULL;
+	
 }
+
 
 QAPInstance::~QAPInstance() {
-	
+	//
 	int i;
-	for (i = 0; i < getNumLoc(); i++) {
-		delete[] _distancias[i];
-		delete[] _flujos[i];		
+	for (i = 0; i < getNumLocations(); i++) {
+		delete[] _flows[i];
+		delete[] _distances[i];
 	}
-	delete[] _distancias;
-	delete[] _flujos;
-	_localizaciones = _instalaciones = 0;
+	delete[] _flows;
+	delete[] _distances;
+	_numLocations = _numFacilities = 0;
 }
 
 
-double QAPInstance::getSumCoste(QAPSolution &solution) {
+double QAPInstance::getSumCost(QAPSolution &solution) {
 
-	double sumCoste = 0.;
 
-	int i, j;
-	for(i=0; i < getNumIns(); i++)
+	double cost = 0.0;
+
+	/*for(int i=0; i<_numLocationss; i++)
 	{
-		for (j=0; j < getNumIns(); j++)
-		{
-				//Si la instalación es par y va a una localización par, no se penaliza
-				if(i%2==0 && j%2==0)
-				{
-					sumCoste += getFlujo(solution.whereIsInstalacion(i),solution.whereIsInstalacion(j)) * getDistancia(i,j);
-				}
-				else
-				{
-					sumCoste += getFlujo(solution.whereIsInstalacion(i),solution.whereIsInstalacion(j)) * getDistancia(i,j) * PENALIZACION;
-				}
-	
+		cout << solution.whereIsObject(i)+1 << " ";
+	}*/
+
+	for (int i=0; i < _numFacilities; i++)
+	{
+		for(int j=0; j < _numFacilities; j++)
+		{	
+			//Al inicializarse a -1 los edificios no debemos evaluar -1 porque daría error de desborde.
+			if(solution.whereIsFacility(i) != -1)
+			{
+				//Si un edificio impar se pone en una localizacion impar se penaliza (*0.1)
+				if(i%2!=0 && j%2!=0)
+					cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j] * 1.10;
+				else	
+					cost += _flows[solution.whereIsFacility(i)][solution.whereIsFacility(j)] * _distances[i][j];
+			} 
 		}
+
 	}
 
-	return sumCoste;
+	return cost;
 }
+
 
 void QAPInstance::readInstance(char *filename) {
 
@@ -74,67 +82,49 @@ void QAPInstance::readInstance(char *filename) {
 	 *      . Multiplicar por 0.8
 	 *      . Dividir el resultado anterior entre el número de mochilas. Eso será la capacidad de cada mochila
 	 */
+	ifstream fichero;
+	fichero.open(filename);
+	int dato;
+	fichero >> dato;
 
-	ifstream fe;
-	fe.open(filename,ifstream::in);
-	if(!fe){
-		cerr << "Error en la apertura del fichero: " << filename << endl;
-		exit(-1);
-	}
+	//leemos el numero de edificios que sera el mismo que le de localizaciones
 
-	int aux;
-	fe >> aux;
-	//cout << "numLoc " << aux <<endl<<endl;
-	_localizaciones = aux;
-	_instalaciones = aux;
+	_numLocations = dato;
+	_numFacilities = dato; 
 
-	string linea;
-	getline(fe, linea, '\n'); //Descartamos la primera línea
-
-	_distancias = new double * [getNumLoc()];
-	_flujos = new double * [getNumLoc()];
+	char cadena[256];
+	fichero.getline(cadena, ' ');	//NOS SALTAMOS LA PRIMERA LINEA
 	
-	if(!_distancias)
+	_flows = new int*[_numLocations];
+	_distances = new int*[_numLocations];
+	for(int i=0; i<_numLocations; i++)
 	{
-		cerr << "Error al reservar memoria para distancias" << endl;
-		exit(-1);
-	}
-	if(!_flujos)
-	{
-		cerr << "Error al reservar memoria para flujos" << endl;
-		exit(-1);
+		_flows[i] = new int[_numLocations];
+		_distances[i] = new int [_numLocations];
 	}
 
-	int i,j;
-	for(i=0; i < getNumLoc(); i++){
-		_distancias[i] = new double [getNumLoc()];
-		_flujos[i] = new double [getNumLoc()];
-	}
-
-	/*for(i=0; i<getNumLoc(); i++)
-	{
-		fe >> _profits[i][i];
-	}*/
-
-	for(i=0; i < getNumLoc(); i++)
-	{
-		for (j=0; j < getNumLoc(); j++)
-		{
-			fe >> _flujos[i][j];
+	//3. Leer la matriz 
+	//int aux; 
+	for(int i = 0; i < _numLocations ; i++){
+		for (int j = 0; j< _numLocations; j++){
+			fichero >> dato;
+			_flows[i][j] = dato;
+			//std::cout << "Flujo "<<i<<" "<<j<<" :"<<dato<<"\n";
 		}
-	}
+	} 
 
-	getline(fe, linea, '\n');
+	fichero.getline(cadena, ' ');	//NOS SALTAMOS
+	
+	for(int i = 0; i < _numLocations ; i++){
+		for (int j = 0; j< _numLocations; j++){
+			fichero >> dato;
+			_distances[i][j] = dato;
+			//std::cout << "distancia "<<i<<" "<<j<<" :"<<dato<<"\n";
 
-	for(i=0; i < getNumLoc(); i++)
-	{
-		for (j=0; j < getNumLoc(); j++)
-		{
-			fe >> _distancias[i][j];
 		}
-	}
+	} 
 
-	fe.close();
+	fichero.close();
 }
 
 
@@ -145,38 +135,41 @@ void QAPInstance::randomPermutation(int size, vector<int>& perm) {
 	 * 2. Llénalo con la permutación identidad
 	 * 3. Recórrelo intercambiando cada elemento con otro escogido de forma aleatoria.
 	 */
-	 
-//	 srand(time(NULL)); <-- Lo está inicializando en el main con una semilla tal que así: srand(seeds[0]);
+	int numero;
+	//srand(time(NULL));
+	perm.clear();
 
-	 int aux;
-	 int numAleatorio;
+	for (int i=0; i<size; i++)
+	{
+		perm.push_back(i);
+	}
 
-	 perm.clear();
-	 for(int i = 0; i < size; i++){
-	 	perm.push_back(i);
-	 }
-
-	 for(int i = 0; i < size; i++){
-	 	numAleatorio = rand()%size;
-	 	aux = perm[i];
-	 	perm[i] = perm[numAleatorio];
-	 	perm[numAleatorio] = aux;
-	 }
-
+	for (int i=0; i<size; i++)
+	{
+		numero = rand () % size;
+		int aux = perm[i];
+		perm[i]=perm[numero];
+		perm[numero]=aux;
+	}
 }
+double QAPInstance::getDeltaSumCost(QAPSolution& solution, int indexFacility1, int indexFacility2) {
+	double deltaSumProfits = 0.0;
 
-double QAPInstance::getDeltaSumCoste(QAPSolution& solution, int localizacion1, int localizacion2) {
+	int location1 = solution.whereIsFacility(indexFacility1);
+	int location2 = solution.whereIsFacility(indexFacility2);
 
-	double deltaSumCoste = 0.0;
+	double actualSumCost = 0.0;
+	actualSumCost = getSumCost(solution);
 
-	double sumCosteInicial = getSumCoste(solution);
+	solution.putFacility(indexFacility1, location2);
+	solution.putFacility(indexFacility2, location1);
+	
+	deltaSumProfits = getSumCost(solution) - actualSumCost;
 
-	solution.intercambio(localizacion1,localizacion2);
+	solution.putFacility(indexFacility1, location1);
+	solution.putFacility(indexFacility2, location2);
 
-	double sumCostePosterior = getSumCoste(solution);
+	return deltaSumProfits;
 
-	solution.intercambio(localizacion1,localizacion2);
-
-	return (sumCostePosterior - sumCosteInicial);
 
 }
