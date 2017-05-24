@@ -21,9 +21,9 @@
 
 using namespace std;
 
-#include "sys/time.h"
-#include "sys/resource.h"
-#include "stdio.h"
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <stdio.h>
 
 class Timer {
 private:

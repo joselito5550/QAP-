@@ -9,22 +9,23 @@
 #include "QAPSolGenerator.h"
 #include "QAPInstance.h"
 #include "QAPSolution.h"
+//QUitar despues
+#include <iostream>
+using namespace std;
 #include <stdlib.h>
- #include <iostream>
 
 void QAPSolGenerator::genRandomSol(QAPInstance &instance, QAPSolution &solution){
 
-	int numLoc = instance.getNumLoc();
+	int numLocation = instance.getNumLocations();
+	vector<Randomhelp> aux;
 
-	solution.clear();
-
-	for (int l = 0; l < numLoc; l++){
-		int instalacionAleatoria = rand() % numLoc;
-
-		if(!solution.existeIns(instalacionAleatoria))
-			solution.putInstalacion(instalacionAleatoria, l);
-		
-		else
-			l--;
+	vector<int> perm;
+	QAPInstance::randomPermutation(numLocation, perm);
+	for(int i=0; i<numLocation; i++)
+	{
+		solution.putFacility(i,perm[i]);
 	}
+	
+
 }
+

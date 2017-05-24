@@ -10,7 +10,6 @@
 #define INCLUDE_QAPMUTATIONOPERATOR_H_
 
 #include "QAPSolution.h"
-#include "Solution.h"
 #include <vector>
 #include <cstdlib>
 
@@ -25,12 +24,12 @@ protected:
 	/**
 	 * Variables miembro de la clase
 	 * _mutProb Probabilidad de mutación
-	 * _numLocalizaciones Número de objetos. Se utiliza para reducir el número de consultas a la instancia
-	 * _numInstalaciones Número de mochilas del problema. Se utiliza para reducir el número de consultas a la instancia
+	 * _numObjs Número de objetos. Se utiliza para reducir el número de consultas a la instancia
+	 * _numKnapsacks Número de mochilas del problema. Se utiliza para reducir el número de consultas a la instancia
 	 */
 	double _mutProb;
-	unsigned _numLocalizaciones;
-	unsigned _numInstalaciones;
+	unsigned _numObjs;
+	unsigned _numKnapsakcs;
 
 	/**
 	 * Función que muta una solución
@@ -38,13 +37,21 @@ protected:
 	 */
 	void mutate(Solution* sol){
 		QAPSolution *s = (QAPSolution*) sol;
-		int pepito=0;
+
 		//TODO Recorrer los objetos y, según la probabilidad de mutación,
 		//asignarlos a una mochila aleatoria (podrían modificarse 0, 1, o más de 1 gen)
-		for(int i=0;i<_numLocalizaciones/2;i++){
-			if(_mutProb>(double)(rand()) / RAND_MAX){//REVISAR probabilidad
-				pepito=rand()%(_numInstalaciones);
-				s->intercambio(i,pepito);
+
+		
+		//DUDA Creo que esta bien, tiene sentido
+
+		int i, numero, mochila_aleatoria;
+		for (i=0; i<_numObjs; i++)
+		{
+			numero=(double)(rand())/RAND_MAX;
+			if  (numero < _mutProb)
+			{
+				mochila_aleatoria=rand() % (_numKnapsakcs + 1);
+				s->putObjectIn(i, mochila_aleatoria);
 			}
 		}
 	}
@@ -57,8 +64,8 @@ public:
 	 */
 	QAPMutationOperator(double mutProb, QAPInstance &instance){
 		_mutProb = mutProb;
-		_numLocalizaciones = instance.getNumLoc();
-		_numInstalaciones = instance.getNumIns();
+		_numObjs = instance.getNumObjs();
+		_numKnapsakcs = instance.getNumKnapsacks();
 	}
 
 	/**

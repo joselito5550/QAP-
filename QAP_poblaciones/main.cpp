@@ -14,17 +14,16 @@
 #define MAX_SECONS_PER_RUN 5
 #define MAX_SOLUTIONS_PER_RUN 100000
 
-#include <iostream>
-#include <vector>
-
 #include "QAPEvaluator.h"
 #include "QAPInstance.h"
 #include "QAPSolGenerator.h"
 #include "QAPSolution.h"
 #include "QAPGeneticAlgorithm.h"
+#include "QAPAntColonyOpt.h"
 #include "QAPStopCondition.h"
 #include "Timer.h"
 
+#include <iostream>
 using namespace std;
 
 //Definición externa de las semillas para el generador de números aleatorios (en seeds.cpp)
@@ -49,9 +48,7 @@ void runAGAExperiment(vector<double> &currentResults,
 	QAPGeneticAlgorithm ga;
 	QAPStopCondition stopCond;
 	QAPEvaluator::resetNumEvaluations();
-
 	ga.initialise(60, instance);
-
 	stopCond.setConditions(MAX_SOLUTIONS_PER_RUN, 0, MAX_SECONS_PER_RUN);
 
 	//Ejecutar el GA
@@ -64,7 +61,7 @@ void runAGAExperiment(vector<double> &currentResults,
 		currentResults.push_back(aResult);
 
 		if (bestSoFarResults.size() > 0)
-			bestSoFarResults.push_back(min(bestSoFarResults.back(), aResult));
+			bestSoFarResults.push_back(max(bestSoFarResults.back(), aResult));
 		else
 			bestSoFarResults.push_back(aResult);
 	}
@@ -82,7 +79,7 @@ void runAGAExperiment(vector<double> &currentResults,
  * @param[out] antsMean vector donde se almacenarán los valores fitness medios de cada iteración del algoritmo
  * @param[in] instance Instancia del problema de la mochila cuadrática múltiple
  */
-/*void runAnACOExperiment(vector<double> &currentResults,
+void runAnACOExperiment(vector<double> &currentResults,
 		vector<double> &bestSoFarResults, vector<double> &bestPerIterations,
 		vector<double> &antsMean, QAPInstance &instance) {
 
@@ -110,7 +107,7 @@ void runAGAExperiment(vector<double> &currentResults,
 
 	bestPerIterations = aco.getBestPerIteration();
 	antsMean = aco.getAntsMeanResults();
-}*/
+}
 
 /**
  * Función que ejecuta todos los experimentos para los argumentos pasados al programa principal
@@ -130,8 +127,8 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 				vector<double>*>;
 		results.push_back(resultsOnThisInstance);
 		char *instanceName = mainArgs[iInstance];
-		//unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
-		instance.readInstance(instanceName);
+		unsigned int numKnapsacks = atoi(mainArgs[iInstance + 1]);
+		instance.readInstance(instanceName, numKnapsacks);
 
 		//Ejecutar el algoritmo evolutivo
 		vector<double> *theseResults = new vector<double>;
@@ -148,7 +145,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 				*popMeanResults, *offMeanResults, instance);
 
 		//Ejecutar el algoritmo de colonia de hormigas
-		/*theseResults = new vector<double>;
+		theseResults = new vector<double>;
 		bestResults = new vector<double>;
 		bestPerIterations = new vector<double>;
 		vector<double> *antsMean = new vector<double>;
@@ -157,7 +154,7 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 		resultsOnThisInstance->push_back(bestPerIterations);
 		resultsOnThisInstance->push_back(antsMean);
 		runAnACOExperiment(*theseResults, *bestResults, *bestPerIterations,
-				*antsMean, instance);*/
+				*antsMean, instance);
 	}
 }
 
@@ -222,13 +219,20 @@ void free3Darray(vector<vector<vector<T>*>*> &array) {
  */
 int main(int argc, char **argv) {
 
+	if (argc < 3 || (argc % 2) != 1) {
+		cout << argv[0] << " (<problem instance files> <numKnapsacks>)+"
+				<< endl;
+		return 0;
+	}
+
+
 
 	//////////////////////////
 	//Ejecución de experimentos
 	//////////////////////////
-	unsigned int numInstances = (argc-1) / 2;
+	unsigned int numInstances = (argc - 1) / 2;
 	vector<vector<vector<double>*>*> allTheResults;
-	srand(seeds[10]);
+	srand(seeds[0]);
 	//En la matriz allTheResults se almacenarán todos los valores de fitness generados
 	//Es tridimensional
 	//El primer índice recorre las instancias de los problemas que se han abordado
@@ -245,7 +249,7 @@ int main(int argc, char **argv) {
 	//////////////////////
 	vector<double> lastResults;
 //	vector<unsigned> printColumns = { 2, 3, 4, 7, 8};
-	vector<unsigned> printColumns = { 0, 1};
+	vector<unsigned> printColumns = { 0, 1, 5, 6 };
 	vector<string> titles =
 			{ "currentGA", "bestGA", "bestGAPerIt", "popMeanGA", "offMeanGA",
 					"currentACO", "bestACO", "bestACOPerIt", "antsMeanACO" };

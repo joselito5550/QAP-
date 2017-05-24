@@ -9,17 +9,14 @@
 #ifndef INCLUDE_QAPGENETICALGORITHM_H_
 #define INCLUDE_QAPGENETICALGORITHM_H_
 
-#include <vector>
-#include <iostream>
-
-#include "QAPSolGenerator.h" //VIGILAR
 #include "QAPMetaheuristic.h"
 #include "QAPSolution.h"
 #include "SelectionOperator.h"
 #include "QAPCrossoverOperator.h"
 #include "QAPMutationOperator.h"
 #include "TournamentSelector.h"
-#include "QAPInstance.h"
+#include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -64,10 +61,16 @@ protected:
 	unsigned indexBest(vector<Solution*> &set) {
 
 		//TODO buscar el índice de la mejor solución en set
-		unsigned indexBest=0;
-
-		for(int i=1;i<set.size();i++){
-			if(set[i]->getFitness()<set[indexBest]->getFitness()){
+		
+		int indexBest=0;
+		double bestFitness=0;
+		bool inicializado = false;
+		for (int i=0; i<set.size(); i++)
+		{
+			if (set[i]->getFitness() > bestFitness || !inicializado)
+			{
+				inicializado = true;
+				bestFitness=set[i]->getFitness();
 				indexBest=i;
 			}
 		}
@@ -83,10 +86,15 @@ protected:
 	unsigned indexWorst(vector<Solution*> &set) {
 
 		//TODO buscar el índice de la peor solución en set
-		unsigned indexWorst=0;
-
-		for(int i=1;i<set.size();i++){
-			if(set[i]->getFitness()>set[indexWorst]->getFitness()){
+		int indexWorst=0;
+		double worstFitness=set[0]->getFitness();
+		bool inicializado = false;
+		for (int i=0; i<set.size(); i++)
+		{
+			if (set[i]->getFitness() < worstFitness || !inicializado)
+			{
+				inicializado = true;
+				worstFitness=set[i]->getFitness();
 				indexWorst=i;
 			}
 		}
@@ -114,16 +122,14 @@ protected:
 		 * 4. Eliminar los individuos de la población actual (liberando memoria)
 		 * 5. Almacenar los individuos de offspring en la población actual
 		 */
+
 		unsigned int indexBestPop = indexBest(_population);
 		unsigned int indexBestOff = indexBest(offspring);
-		unsigned int indexWorstOff;
 
-		if(_population[indexBestPop]->getFitness() < offspring[indexBestOff]->getFitness()){
-			indexWorstOff = indexWorst(offspring);
+		if (_population[indexBestPop]->getFitness() > offspring[indexBestOff]->getFitness())
+		{
+			int indexWorstOff = indexWorst(offspring);
 			offspring[indexWorstOff]->copy(*_population[indexBestPop]);
-			
-
-			//REVISAR - Duda si se puede asignar o se requiere usar copy
 		}
 
 		//Eliminar los individuos de la población actual
@@ -139,7 +145,6 @@ protected:
 			_population.push_back(offspring.back());
 			offspring.pop_back();
 		}
-		//_popSize=offSize;
 	}
 
 	/**
@@ -159,17 +164,17 @@ protected:
 			 * útil para cuando el descendiente es copia del padre. Por tanto, sólo se evaluarán las soluciones
 			 * que no tentan un fitness válido
 			 */
-
 			if (!(s->hasValidFitness())) {
 
+				//Evaluar
 				
-				fitness=QAPEvaluator::computeFitness(*_instance,*s);
-				_results.push_back(fitness);
+				fitness=QAPEvaluator::computeFitness(*_instance, *s);
 
+				_results.push_back(fitness);
 				s->setFitness(fitness);
 
 				//Actualizar la mejor solución
-				if (fitness  < _bestSolution->getFitness()){
+				if (QAPEvaluator::compare(fitness, _bestSolution->getFitness()) > 0){
 					_bestSolution->copy(*s);
 				}
 			}
@@ -197,28 +202,22 @@ protected:
 		 * 4. Insertarlas en la población
 		 */
 
-
 		double fitness;
-		//double bestFitness;
-
 		for (unsigned i = 0; i < popSize; i++) {
-	 
-			QAPSolution * sol = new QAPSolution(*_instance);
+			QAPSolution * solution = new QAPSolution(*_instance);
+			QAPSolGenerator::genRandomSol(*_instance, *solution);
 
-			QAPSolGenerator::genRandomSol(*_instance,*sol);
+			fitness=QAPEvaluator::computeFitness(*_instance, *solution);
+			solution->setFitness(fitness);
 
-			fitness=QAPEvaluator::computeFitness(*_instance,*sol);
-			sol->setFitness(fitness);
-
-
-			if (fitness < _bestSolution->getFitness()){
-				_bestSolution->copy(*sol);
+			if (QAPEvaluator::compare(fitness, _bestSolution->getFitness()) > 0)
+			{
+				_bestSolution->copy(*solution);
 			}
-			
-			_results.push_back(fitness);
-			_population.push_back(sol);
-		}
 
+			_results.push_back(fitness);
+			_population.push_back(solution);
+		}
 	}
 
 	/**
@@ -279,7 +278,6 @@ public:
 		 *   b. Seleccionar los padres
 		 *   c. Cruzar los padres
 		 *   d. Mutar los descendientes
-		 *   e. Evaluar el conjunto de descendientes // HACER !!!!!
 		 *   f. Almacenar la media de los descendientes
 		 *   g. Seleccionar la nueva población
 		 *
@@ -293,20 +291,24 @@ public:
 			_popMeanResults.push_back(computeMeanFitness(_population));
 			_bestPerIterations.push_back(_population.at(indexBest(_population))->getFitness());
 
+			//B
 			vector<Solution*> parents;
 			_selector->select(_population, parents);
 
-			vector<Solution*> offspring;
-			_crossoverOp->cross(parents, offspring);
+			//C
 
+			vector<Solution*> offspring;
+			
+			_crossoverOp->cross(parents, offspring);
 			_mutOp->mutate(offspring);
 
+			//E 
 			evaluate(offspring);
 
+			//F
 			_offMeanResults.push_back(computeMeanFitness(offspring));
 
 			selectNewPopulation(offspring);
-
 			stopCondition.notifyIteration();
 		}
 
@@ -333,7 +335,7 @@ public:
 		}
 
 		_bestSolution = new QAPSolution(*_instance);
-		QAPSolGenerator::genRandomSol(*_instance,*_bestSolution);
+		QAPSolGenerator::genRandomSol(*_instance, *_bestSolution);
 		double fitness = QAPEvaluator::computeFitness(*_instance, *_bestSolution);
 		_bestSolution->setFitness(fitness);
 
@@ -348,7 +350,7 @@ public:
 		}
 
 		if (_mutOp == NULL) {
-			_mutOp = new QAPMutationOperator((0.25 / _instance->getNumLoc()),
+			_mutOp = new QAPMutationOperator((0.25 / _instance->getNumObjs()),
 					*_instance);
 		}
 

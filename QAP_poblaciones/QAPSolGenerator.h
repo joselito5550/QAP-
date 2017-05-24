@@ -20,6 +20,10 @@
  * Sobre la representación de soluciones:
  * La representación de las soluciones será un vector de número enteros: de 1 a M para objetos que están en alguna de las M mochilas y 0 para objetos que no están en ninguna mochilas
  */
+struct Randomhelp{
+	int num;
+	bool used = false;
+};
 class QAPSolGenerator {
 
 public:

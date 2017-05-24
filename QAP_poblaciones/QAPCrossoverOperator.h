@@ -9,12 +9,10 @@
 #ifndef INCLUDE_QAPCROSSOVEROPERATOR_H_
 #define INCLUDE_QAPCROSSOVEROPERATOR_H_
 
-#include <vector>
- #include <cstdlib>
- 
 #include "QAPSolution.h"
+#include "Solution.h"
 #include "QAPInstance.h"
-#include "QAPGeneticAlgorithm.h"
+#include <vector>
 
 using namespace std;
 
@@ -27,11 +25,11 @@ protected:
 	/**
 	 * Variables miembro de la clase:
 	 *  - _instance Instancia de problema abordada. Se utiliza únicamente para crear nuevos objetos QAPSolution
-	 *  - _numLocalizaciones almacena el número de objetos de la instancia abordada para reducir el número de consultas a la instancia
+	 *  - _numObjs almacena el número de objetos de la instancia abordada para reducir el número de consultas a la instancia
 	 *  - _crossProb probabilidad de cruce
 	 */
 	QAPInstance *_instance;
-	unsigned _numLocalizaciones;
+	unsigned _numObjs;
 	double _crossProb;
 
 	/**
@@ -41,41 +39,38 @@ protected:
 	 * @return Nuevo objeto solución descendiente de haber cruzado s1 y s2. La solución se reserva dinámicamente en memoria. Es responsabilidad del invocador de gestionarla correctamente.
 	 */
 	QAPSolution * cross(Solution *s1, Solution *s2) {
-		QAPSolution * hijo = new QAPSolution(*_instance);
+		QAPSolution * sol = new QAPSolution(*_instance);
 		QAPSolution * sol1 = (QAPSolution *) s1;
 		QAPSolution * sol2 = (QAPSolution *) s2;
 
-		int aux;
-		int iterador=0;
-
 		double randSample = (((double) rand()) / RAND_MAX);
+
+		int numero; 
 
 		if (randSample < _crossProb) {
 
-			//Rellenamos un 50% del hijo, a partir de 2 particiones del 25% del padre1, una al principio y otra al final esto solo lo leemos nosotros
-			for(int i=0;i<_numLocalizaciones/4;i++){
-				hijo->putInstalacion(sol1->whatIsInLocalizacion(i),i);
-			}
-			for(int i=_numLocalizaciones-1; i > (_numLocalizaciones- 1 - _numLocalizaciones/4);i--){
-				hijo->putInstalacion(sol1->whatIsInLocalizacion(i),i);
-			}
-
-			for(int i=0;i<_numLocalizaciones;i++){
-				aux=sol2->whatIsInLocalizacion(i);
-
-				if(!hijo->existeIns(aux)){
-					hijo->putInstalacion(sol1->whatIsInLocalizacion(i),iterador+_numLocalizaciones/4);
-					iterador+=1;
+			//TODO Cruce uniforme de los dos padres,
+			//que va eligiendo el valor de uno de los padres aleatoriamente,
+			//con la misma probabilidad, para cada gen
+			for(int i=0; i<_numObjs; i++)
+			{
+				numero=(rand()%2);			
+				if (numero==1)
+				{
+					sol->putObjectIn(i, sol1->whereIsObject(i));
 				}
-
-			}
+				else
+				{
+					sol->putObjectIn(i, sol2->whereIsObject(i));
+				}
+			}			
 
 		} else {
 			//Si no hay cruce, copiar el primer padre
-			hijo->copy(*sol1);
+			sol->copy(*sol1);
 		}
 
-		return hijo;
+		return sol;
 	}
 
 public:
@@ -87,7 +82,7 @@ public:
 	 */
 	QAPCrossoverOperator(double crossProb, QAPInstance &instance) {
 		_instance = &instance;
-		_numLocalizaciones = instance.getNumLoc();
+		_numObjs = instance.getNumObjs();
 		_crossProb = crossProb;
 	}
 
@@ -101,9 +96,13 @@ public:
 		unsigned numParents = (unsigned) parents.size();
 
 		//TODO aplicar cruce entre cada dos padres consecutivos (1,2), (3,4), ...
-		for (int i=0;i<numParents;i+=2) {
-			QAPSolution *sol = cross(parents[i],parents[i+1]);
-			offspring.push_back(sol);
+		//DUDA parents[0] nunca se toca?
+		for (int i=0; i<numParents; i=i+2) {
+			if(i+1 < numParents )
+			{
+				QAPSolution *sol = cross(parents[i],parents[i+1]);
+				offspring.push_back(sol);
+			}
 		}
 	}
 };

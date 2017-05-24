@@ -9,11 +9,9 @@
 #ifndef INCLUDE_TOURNAMENTSELECTOR_H_
 #define INCLUDE_TOURNAMENTSELECTOR_H_
 
-#include <vector>
-#include <cstdlib>
-
 #include "Solution.h"
 #include "SelectionOperator.h"
+#include <vector>
 
 using namespace std;
 
@@ -42,24 +40,18 @@ protected:
 		 *
 		 * 2. Repetir (_k-1) veces la selección de otra solución aleatoria y el torneo con la actualmente ganadora (mantener la mejor)
 		 */
-
-		 Solution * best;
-		 int actualGanadora;
-		 int iterador=0;
-
-		 //actualGanadora=set[rand()%set.size()];
-
-		 actualGanadora=0;//Inicializamos al elemento 0 como actual ganadora
-
-		 for(int i=0;i<_k-1;i++){
-		 	iterador=rand()%set.size();
-		 	if(set[iterador]->getFitness() < set[actualGanadora]->getFitness()){
-		 		actualGanadora=iterador;
-		 	} 
-		 }
-
-		best=set[actualGanadora];//REVISAR si debemos asignar mediante copy
-
+		int numero;
+		
+		numero=rand() % set.size();
+		Solution * best=set[numero];
+		
+		for(int i=1; i<_k; i++)
+		{
+			numero=rand() % set.size();
+			Solution * aux=set[numero];
+			if(aux->getFitness() > best->getFitness())
+				best=aux;
+		}
 		return best;
 	}
 
@@ -85,13 +77,15 @@ public:
 	 */
 	virtual void select(vector<Solution*> &orig, vector<Solution*> &result){
 
+		//DUDA
+		//MAL SEGURO
+
 		//TODO utilizando le método propio selectOne, seleccionar tantas parejas
 		//de padres como elementos hay en orig
-		
-
-		for(int i=0;i<orig.size();i++){
-			result.push_back(selectOne(orig));//Primer miembro de pareja
-			result.push_back(selectOne(orig));//Segundo miembro de pareja
+		for (int i=0; i<orig.size(); i++)
+		{
+			result.push_back(selectOne(orig));
+			result.push_back(selectOne(orig));
 		}
 	}
 };

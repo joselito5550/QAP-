@@ -43,7 +43,7 @@ public:
 	 *
 	 * @return Diferencia en fitness si a la solución se le aplicase la asignación del objeto indexObject a la mochila indexKnapsack
 	 */
-	static double computeDeltaFitness(QAPInstance &instance, QAPSolution &solution, int indexObject, int indexKnapsack);
+	static double computeDeltaFitness(QAPInstance &instance, QAPSolution &solution, int indexFacility1, int indexFacility2);
 
 	/**
 	 * Función que resetea la variable interna que contabiliza el número de evaluaciones
@@ -57,7 +57,34 @@ public:
 		return _numEvaluations;
 	}
 
-	
+	/**
+	 * Función que realiza la comparación entre dos valores de fitness (sirve para especificar si es un problema de maximización o minimización)
+	 * @param[in] f1 primer valor de fitness a comparar
+	 * @param[in] f2 segundo valor de fitness a comparar
+	 * @return Un valor positivo si el primer valor es mejor que el segundo, negativo en caso contrario, y 0 si son indistinguibles
+	 */
+	static double compare(double f1, double f2){
+		/*double aux = 0;
+		if(f1 > f2)
+		//aux = 1;
+		aux = -1;
+		else if(f1<f2)
+		//aux = -1;
+		aux = 1;
+		else aux = 0;
+		return aux; //TODO corregir lo que hay que devolver*/
+		//Al ser minimización devolvemos f2-f1, para que las gráficas vayan decreciendo.
+		return (f2-f1);
+	}
+
+	/**
+	 * Función que indica si el problema es de minimización o de maximización
+	 * @return Devuelve true si el problema es de minimización o false, si es de maximización
+	 */
+
+	static bool isToBeMinimised(){
+		return (compare(0,1) > 0);
+	}
 };
 
 #endif
