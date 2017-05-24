@@ -227,11 +227,11 @@ void runExperiments(vector<vector<vector<double>*>*> &results, char **mainArgs,
 		runAGraspExperiment(*theseFirstResults, *bestFirstResults, instance);
 
 		//Ejecutar la búsqueda Iterated Greedy
-		theseFirstResults = new vector<double>;
+	/*	theseFirstResults = new vector<double>;
 		bestFirstResults = new vector<double>;
 		resultsOnThisInstance->push_back(theseFirstResults);
 		resultsOnThisInstance->push_back(bestFirstResults);
-		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);
+		runAIGExperiment(*theseFirstResults, *bestFirstResults, instance);*/
 	}
 }
 
