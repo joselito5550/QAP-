@@ -23,7 +23,7 @@ QAPSolution::QAPSolution(QAPInstance &instance) {
 	}
 	//Vamos a inicializar a -1, nos sera util para Iterated Greedy
 	for (int i = 0; i < _numFacilities; i++) {
-		_sol[i] = -1;
+		_sol[i] = 0;
 	}
 }
 

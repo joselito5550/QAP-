@@ -33,7 +33,7 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 	 *     Almacenar dicha asignación como la mejor en caso de que sea la de mayor densidad
 	 */
 
-	/*for(vector<int>::iterator i = _destruidas.begin(); i != _destruidas.end(); i++)
+	for(vector<int>::iterator i = _destruidas.begin(); i != _destruidas.end(); i++)
 	{
 		int indexFacility1 = *i;
 
@@ -51,7 +51,12 @@ void QAPIteratedGreedy::chooseOperation(QAPObjectAssignmentOperation& operation)
 				bestDeltaFitness = deltaFitness;
 			}
 		}
-	}*/
+		// int random_perm = rand()%numLocations;
+		// if(_sol->whereIsFacility(*i)!=-1){
+		// 	_sol->putFacility(*i,random_perm);
+		// }
+		// else i--;
+	}
 	
 
 	for (unsigned i = 0; i < numLocations; i++) {
