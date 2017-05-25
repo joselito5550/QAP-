@@ -1,8 +1,8 @@
 #!/bin/bash
 
 cat << _end_ | gnuplot
-set terminal postscript eps color
-set output "graficoFirst.eps"
+set terminal pngcairo size 600,500 enhanced font 'Verdana,10'
+set output 'First.png'
 set title "First Improvement"
 set key right bottom
 set xlabel "Iteracion"
