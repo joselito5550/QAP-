@@ -104,9 +104,9 @@ public:
 		return _results;
 	}
 
-	void imprimeDestruidas(){
-		for(unsigned i=0; i<_destruidas.size(); i++){
-			std::cout << _destruidas[i] << " ";
+	void imprime(vector<int> vec){
+		for(unsigned i=0; i<vec.size(); i++){
+			std::cout << vec[i] << " ";
 		}
 		std::cout << std::endl;
 	}
